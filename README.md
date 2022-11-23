@@ -1,3 +1,3 @@
-## The Car Hub
+# The Car Hub
 
-### Web application using .NET/Razor MVC for A car vendor
+## Web application using .NET/Razor MVC for A car vendor
