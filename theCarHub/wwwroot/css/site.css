@@ -20,3 +20,22 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.navlink {
+    color: #fff;
+    -ms-transition: background-color .2s, color .2s;
+    -o-transition: background-color .2s, color .2s;
+    -webkit-transition: background-color .2s, color .2s;
+    transition: background-color .2s, color .2s;
+}
+
+.navlink :hover, .navlink :focus 
+    {
+        background-color: #000000;
+        color: #000000;
+    }
+
+    .navlink:active {
+        background-color: #000000;
+        color: #fff;
+    }

@@ -17,6 +17,11 @@ a {
   color: #0077cc;
 }
 
+a:hover {
+    background-color: white;
+    color: black;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -37,7 +42,8 @@ a {
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem #000000;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
