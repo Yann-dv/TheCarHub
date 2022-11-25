@@ -2,7 +2,7 @@
 
 public class UserCar
 {
-    public virtual AppUser AppUser { get; set; }
+    public virtual AppUser User { get; set; }
     public virtual Car Car { get; set; }
     public string UserId { get; set; }
     public int CarId { get; set; }

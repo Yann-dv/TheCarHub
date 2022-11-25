@@ -5,13 +5,13 @@ namespace theCarHub.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<UserCar> UserCars { get; set; }
-
+        public DbSet<Car>? Cars { get; set; }
+        public DbSet<UserCar>? UserCars { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
