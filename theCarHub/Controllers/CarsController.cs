@@ -6,24 +6,57 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using theCarHub.Models;
 
 namespace theCarHub.Controllers
 {
+    [Authorize]
     public class CarsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public CarsController(ApplicationDbContext context)
+        public CarsController(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        [HttpGet]
+        public async Task<string> GetCurrentUserId()
+        {
+            AppUser user = await GetCurrentUserAsync();
+            return user.Id;
+        }
+
+        private Task<AppUser> GetCurrentUserAsync() =>
+            _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Cars
         public async Task<IActionResult> Index()
         {
-              return _context.Cars != null ? 
-                          View(await _context.Cars.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Cars'  is null.");
+            var userId = await GetCurrentUserId();
+            var model = await _context.Cars.Select(x =>
+                new CarViewModel
+                {
+                    CarId = x.Id,
+                    Name = x.Name,
+                    Year = x.Year
+                }).ToListAsync();
+            foreach (var item in model)
+            {
+                var m = await _context.UserCars.FirstOrDefaultAsync(x =>
+                    x.UserId == userId && x.CarId == item.CarId);
+                if (m != null)
+                {
+                    item.InWatchlist = true;
+                    item.Rating = m.Rating;
+                    item.Watched = m.Watched;
+                }
+            }
+            return View(model);
         }
 
         // GET: Cars/Details/5
@@ -157,6 +190,47 @@ namespace theCarHub.Controllers
         private bool CarExists(int id)
         {
           return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> WatchlistToggler(int id, int val)
+        {
+            var returnVal = -1;
+            var userId = await GetCurrentUserId();
+            if (val == 1)
+            {
+                // if a record exists in UserMovies that contains both the user’s
+                // and movie’s Ids, then the movie is in the watchlist and can
+                // be removed
+                var car = _context.UserCars.FirstOrDefault(x =>
+                    x.CarId == id && x.UserId == userId);
+                if (car != null)
+                {
+                    _context.UserCars.Remove(car);
+                    returnVal = 0;
+                }
+
+            }
+            else
+            {
+                // the movie is not currently in the watchlist, so we need to
+                // build a new UserMovie object and add it to the database
+                _context.UserCars.Add(
+                    new UserCar
+                    {
+                        UserId = userId,
+                        CarId = id,
+                        Watched = false,
+                        Rating = 0
+                    }
+                );
+                returnVal = 1;
+            }
+            // now we can save the changes to the database
+            await _context.SaveChangesAsync();
+            // and our return value (-1, 0, or 1) back to the script that called
+            // this method from the Index page
+            return Json(returnVal);
         }
     }
 }
