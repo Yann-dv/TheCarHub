@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theCarHub.Data;
 
 #nullable disable
 
-namespace theCarHub.Data.Migrations
+namespace theCarHub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221125122852_UserCarMigration")]
-    partial class UserCarMigration
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,10 +175,12 @@ namespace theCarHub.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -218,10 +217,12 @@ namespace theCarHub.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -258,10 +259,6 @@ namespace theCarHub.Data.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -270,14 +267,12 @@ namespace theCarHub.Data.Migrations
 
                     b.HasKey("UserId", "CarId");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("CarId");
 
                     b.ToTable("UserCars");
                 });
 
-            modelBuilder.Entity("theCarHub.Data.AppUser", b =>
+            modelBuilder.Entity("theCarHub.Data.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -285,7 +280,7 @@ namespace theCarHub.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("AppUser");
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -341,24 +336,24 @@ namespace theCarHub.Data.Migrations
 
             modelBuilder.Entity("theCarHub.Data.UserCar", b =>
                 {
-                    b.HasOne("theCarHub.Data.AppUser", "AppUser")
-                        .WithMany("Watchlist")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("theCarHub.Data.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
+                    b.HasOne("theCarHub.Data.ApplicationUser", "User")
+                        .WithMany("Watchlist")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Car");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("theCarHub.Data.AppUser", b =>
+            modelBuilder.Entity("theCarHub.Data.ApplicationUser", b =>
                 {
                     b.Navigation("Watchlist");
                 });

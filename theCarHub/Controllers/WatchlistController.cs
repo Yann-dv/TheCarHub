@@ -8,22 +8,22 @@ namespace theCarHub.Controllers
     public class WatchlistController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public WatchlistController(ApplicationDbContext context,
-            UserManager<AppUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        private Task<AppUser> GetCurrentUserAsync() =>
+        private Task<ApplicationUser> GetCurrentUserAsync() =>
             _userManager.GetUserAsync(HttpContext.User);
 
         [HttpGet]
         public async Task<string> GetCurrentUserId()
         {
-            AppUser user = await GetCurrentUserAsync();
+            ApplicationUser user = await GetCurrentUserAsync();
             return user?.Id;
         }
 

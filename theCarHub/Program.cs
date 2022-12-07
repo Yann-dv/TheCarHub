@@ -10,7 +10,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<AppUser>(options =>
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     {
         options.User.RequireUniqueEmail = false;
     })
