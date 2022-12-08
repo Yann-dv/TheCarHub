@@ -3,9 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+DotNetEnv.Env.Load(); //env var loads
+
+var azureConnectionString = Environment.GetEnvironmentVariable("TheCarHub_AzureConnection");
+string connectionString;
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+if (azureConnectionString != null) {
+    connectionString = azureConnectionString ?? throw new InvalidOperationException("Connection string 'AzureConnection' not found.");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
