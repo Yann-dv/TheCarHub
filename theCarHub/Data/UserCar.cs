@@ -6,6 +6,6 @@ public class UserCar
     public virtual Car Car { get; set; }
     public string UserId { get; set; }
     public int CarId { get; set; }
-    public bool Watched { get; set; }
+    public bool Listed { get; set; }
     public int Rating { get; set; }
 }

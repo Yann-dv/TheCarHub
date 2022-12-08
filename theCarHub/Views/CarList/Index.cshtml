@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<theCarHub.Models.CarViewModel>
 
 @{
-    ViewData["Title"] = "Our Cars";
+    ViewData["Title"] = "Cars gallery";
 }
 
 <h1>Index</h1>
@@ -19,10 +19,10 @@
             @Html.DisplayNameFor(model => model.Year)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.InCarList)
+            @Html.DisplayNameFor(model => model.ToShow)
         </th>
             <th>
-                @Html.DisplayNameFor(model => model.Watched)
+                @Html.DisplayNameFor(model => model.Listed)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
@@ -43,10 +43,10 @@
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InCarList)
+                @Html.DisplayFor(modelItem => item.ToShow)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Watched)
+                @Html.DisplayFor(modelItem => item.Listed)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Rating)

@@ -51,9 +51,9 @@ namespace theCarHub.Controllers
                     x.UserId == userId && x.CarId == item.CarId);
                 if (userCar != null)
                 {
-                    item.InWatchlist = true;
+                    item.ToShow = true;
                     item.Rating = userCar.Rating;
-                    item.Watched = userCar.Watched;
+                    item.Listed = userCar.Listed;
                 }
             }
             return View(model);
@@ -193,7 +193,7 @@ namespace theCarHub.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> WatchlistToggler(int id, int val)
+        public async Task<JsonResult> CarListToggler(int id, int val)
         {
             int retval = -1;
             var userId = await GetCurrentUserId();
@@ -220,7 +220,7 @@ namespace theCarHub.Controllers
                     {
                         UserId = userId,
                         CarId = id,
-                        Watched = false,
+                        Listed = false,
                         Rating = 0
                     }
                 );

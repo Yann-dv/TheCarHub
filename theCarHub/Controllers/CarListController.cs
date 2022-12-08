@@ -5,12 +5,12 @@ using theCarHub.Models;
 
 namespace theCarHub.Controllers
 {
-    public class WatchlistController : Controller
+    public class CarListController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public WatchlistController(ApplicationDbContext context,
+        public CarListController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -36,8 +36,8 @@ namespace theCarHub.Controllers
                 CarId = x.CarId,
                 Name = x.Car.Name,
                 Year = x.Car.Year,
-                Watched = x.Watched,
-                InCarList = true,
+                Listed = x.Listed,
+                ToShow = true,
                 Rating = x.Rating
             }).ToList();
 

@@ -21,7 +21,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Year)
         </th>
-        <th>In Watchlist</th>
+        <th>Show/Hide to Gallery</th>
         <th></th>
     </tr>
     </thead>
@@ -38,8 +38,8 @@
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
-                <button id="@item.CarId" data-val="@item.InWatchlist" class="btn watchlistToggleBtn">
-                    @(item.InWatchlist ? " - " : " + ")
+                <button id="@item.CarId" data-val="@item.ToShow" class="btn carListToggleBtn">
+                    @(item.ToShow ? " - " : " + ")
                 </button>
             </td>
             <td>
@@ -58,7 +58,7 @@
             var btn = $(this);
             var movieId = btn.attr('id');
             var movieVal = btn.attr('data-val') == "False" ? 0 : 1;
-            $.get('/Cars/WatchlistToggler?id=' + movieId + '&val=' + movieVal,
+            $.get('/Cars/CarListToggler?id=' + movieId + '&val=' + movieVal,
                 function (data) {
                     if (data === 0) {
                         btn.attr('data-val', 'False');

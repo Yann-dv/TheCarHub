@@ -17,7 +17,7 @@ namespace theCarHub.Controllers
         {
             /*if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Watchlist");
+                return RedirectToAction("Index", "CarList");
             }*/
             return View();
         }
