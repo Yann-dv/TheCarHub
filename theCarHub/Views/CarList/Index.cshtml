@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<theCarHub.Models.CarViewModel>
 
 @{
-    ViewData["Title"] = "My Watchlist";
+    ViewData["Title"] = "Our Cars";
 }
 
 <h1>Index</h1>
@@ -19,7 +19,7 @@
             @Html.DisplayNameFor(model => model.Year)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.InWatchlist)
+            @Html.DisplayNameFor(model => model.InCarList)
         </th>
             <th>
                 @Html.DisplayNameFor(model => model.Watched)
@@ -43,7 +43,7 @@
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InWatchlist)
+                @Html.DisplayFor(modelItem => item.InCarList)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Watched)

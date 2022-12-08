@@ -37,7 +37,7 @@ namespace theCarHub.Controllers
                 Name = x.Car.Name,
                 Year = x.Car.Year,
                 Watched = x.Watched,
-                InWatchlist = true,
+                InCarList = true,
                 Rating = x.Rating
             }).ToList();
 
