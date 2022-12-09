@@ -251,6 +251,25 @@ namespace theCarHub.Migrations
                     b.ToTable("Cars");
                 });
 
+            modelBuilder.Entity("theCarHub.Data.CarImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id", "CarId");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("CarImages");
+                });
+
             modelBuilder.Entity("theCarHub.Data.UserCar", b =>
                 {
                     b.Property<string>("UserId")
@@ -332,6 +351,17 @@ namespace theCarHub.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("theCarHub.Data.CarImages", b =>
+                {
+                    b.HasOne("theCarHub.Data.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("theCarHub.Data.UserCar", b =>

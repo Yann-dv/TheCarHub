@@ -30,8 +30,8 @@ namespace theCarHub.Controllers
         public async Task<IActionResult> Index()
         {
             var id = await GetCurrentUserId();
-            var userMovies = _context.UserCars.Where(x => x.UserId == id);
-            var model = userMovies.Select(x => new CarViewModel
+            var userCars = _context.UserCars.Where(x => x.UserId == id);
+            var model = userCars.Select(x => new CarViewModel
             {
                 CarId = x.CarId,
                 Name = x.Car.Name,
