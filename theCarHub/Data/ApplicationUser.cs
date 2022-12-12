@@ -1,6 +1,8 @@
-﻿namespace theCarHub.Data;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class ApplicationUser : Microsoft.AspNetCore.Identity.IdentityUser
+namespace theCarHub.Data;
+
+public class ApplicationUser : IdentityUser
 {
 
     public ApplicationUser() : base()
@@ -8,6 +10,10 @@ public class ApplicationUser : Microsoft.AspNetCore.Identity.IdentityUser
         this.CarList = new HashSet<UserCar>();
     }
 
+    [PersonalData]
     public string FirstName { get; set; }
+    [PersonalData]
+    public string LastName { get; set; }
+    [PersonalData]
     public virtual ICollection<UserCar> CarList { get; set; }
 }
