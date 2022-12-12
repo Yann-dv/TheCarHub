@@ -5,7 +5,7 @@ using theCarHub.Data;
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load(); //env var loads
 
-var azureConnectionString = Environment.GetEnvironmentVariable("TheCarHub_AzureConnection");
+var azureConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");//Environment.GetEnvironmentVariable("TheCarHub_AzureConnection");
 string connectionString;
 
 // Add services to the container.
@@ -23,7 +23,21 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     {
-        options.User.RequireUniqueEmail = false;
+        // User settings.
+        options.User.RequireUniqueEmail = true;
+        options.User.AllowedUserNameCharacters =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
+
+        // Password settings.
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequiredLength = 9;
+
+        // Lockout settings.
+        options.Lockout.MaxFailedAccessAttempts = 3;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
     })
     //.AddDefaultUI(UIFramework.Bootstrap4)
     .AddEntityFrameworkStores<ApplicationDbContext>()
