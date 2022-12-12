@@ -5,9 +5,9 @@ namespace theCarHub.Data;
 public class ApplicationUser : IdentityUser
 {
 
-    public ApplicationUser() : base()
+    public ApplicationUser()
     {
-        this.CarList = new HashSet<UserCar>();
+        CarList = new HashSet<UserCar>();
     }
 
     [PersonalData]
