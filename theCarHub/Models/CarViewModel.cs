@@ -1,4 +1,7 @@
-﻿namespace theCarHub.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+
+namespace theCarHub.Models;
 
 public class CarViewModel
 {

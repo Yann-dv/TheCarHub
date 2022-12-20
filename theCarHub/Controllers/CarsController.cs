@@ -43,7 +43,7 @@ namespace theCarHub.Controllers
                 {
                     CarId = x.Id,
                     Name = x.Name,
-                    Year = x.Year
+                    Year = x.Year.Year,
                 }).ToListAsync();
             foreach (var item in model)
             {

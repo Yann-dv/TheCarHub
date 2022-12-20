@@ -35,7 +35,7 @@ namespace theCarHub.Controllers
             {
                 CarId = x.CarId,
                 Name = x.Car.Name,
-                Year = x.Car.Year,
+                Year = x.Car.Year.Year,
                 Listed = x.Listed,
                 ToShow = true,
                 Rating = x.Rating
