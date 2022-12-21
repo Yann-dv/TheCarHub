@@ -1,0 +1,58 @@
+﻿@model IEnumerable<theCarHub.Models.CarViewModel>
+
+@{
+    ViewData["Title"] = "Cars gallery";
+}
+
+<h1 class="text-decoration-underline">All our cars</h1>
+
+<table class="table text-light">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CarId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ToShow)
+        </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Listed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToShow)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Listed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+
+        </tr>
+    }
+    </tbody>
+</table>
