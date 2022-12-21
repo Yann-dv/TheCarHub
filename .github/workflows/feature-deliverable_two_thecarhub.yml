@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'theCarHub'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DD5E35637EC24D39B55BC31E912A909E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_69C73F721F1A41E080414974661D8BC4 }}
           package: .
