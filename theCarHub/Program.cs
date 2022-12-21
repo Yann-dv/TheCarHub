@@ -43,7 +43,16 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-if (builder.Configuration["Authentication:Facebook:AppId"] != null)
+if (builder.Configuration["Authentication:Facebook:AppId"] == null && Environment.GetEnvironmentVariable("Facebook_AppId") != null)
+{
+    builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
+    {
+        facebookOptions.AppId = Environment.GetEnvironmentVariable("Facebook_AppId");
+        facebookOptions.AppSecret = Environment.GetEnvironmentVariable("FACEBOOK_PROVIDER_AUTHENTICATION_SECRET");
+    });
+}
+
+else if (builder.Configuration["Authentication:Facebook:AppId"] != null && Environment.GetEnvironmentVariable("Facebook_AppId") == null)
 {
     builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
     {
@@ -51,7 +60,6 @@ if (builder.Configuration["Authentication:Facebook:AppId"] != null)
         facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
     });
 }
-
 /*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();*/
 builder.Services.AddRazorPages();
