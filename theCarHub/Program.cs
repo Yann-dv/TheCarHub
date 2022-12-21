@@ -5,7 +5,7 @@ using theCarHub.Data;
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load(); //env var loads
 
-var azureConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");//Environment.GetEnvironmentVariable("TheCarHub_AzureConnection");
+var azureConnectionString = Environment.GetEnvironmentVariable("TheCarHub_AzureConnection");
 string connectionString;
 
 // Add services to the container.

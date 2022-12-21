@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -38,13 +33,13 @@ namespace theCarHub.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = await GetCurrentUserId();
-            var model = await _context.Cars.Select(x =>
+            var model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars.Select(x =>
                 new CarViewModel
                 {
                     CarId = x.Id,
                     Name = x.Name,
                     Year = x.Year.Year,
-                }).ToListAsync();
+                }));
             foreach (var item in model)
             {
                 var userCar = await _context.UserCars.FirstOrDefaultAsync(x =>
