@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - theCarHub
 on:
   push:
     branches:
-      - feature/deliverable_one
+      - feature/deliverable_two
   workflow_dispatch:
 
 jobs:

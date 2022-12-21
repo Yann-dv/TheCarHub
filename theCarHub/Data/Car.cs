@@ -12,7 +12,7 @@ namespace theCarHub.Data
         public string? Name { get; set; }
         
         [System.ComponentModel.DataAnnotations.Required]
-        [BindProperty, DataType("month"), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
+        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Year { get; set; }
     }
 }
