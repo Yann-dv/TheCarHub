@@ -73,6 +73,7 @@ namespace theCarHub.Controllers
         }
 
         // GET: Cars/Create
+        [Authorize(Roles = "Administrator, Developer")]
         public IActionResult Create()
         {
             return View();
@@ -95,6 +96,7 @@ namespace theCarHub.Controllers
         }
 
         // GET: Cars/Edit/5
+        [Authorize(Roles = "Administrator, Developer")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Cars == null)
@@ -109,7 +111,8 @@ namespace theCarHub.Controllers
             }
             return View(car);
         }
-
+        
+        [Authorize(Roles = "Administrator, Developer")]
         // POST: Cars/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -145,6 +148,7 @@ namespace theCarHub.Controllers
             return View(car);
         }
 
+        [Authorize(Roles = "Administrator, Developer")]
         // GET: Cars/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -162,7 +166,8 @@ namespace theCarHub.Controllers
 
             return View(car);
         }
-
+        
+        [Authorize(Roles = "Administrator, Developer")]
         // POST: Cars/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

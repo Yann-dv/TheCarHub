@@ -7,7 +7,10 @@
 <h1 class="text-decoration-underline">Cars in stock</h1>
 
 <p>
-    <a asp-action="Create">Add a new car</a>
+    @if (User.IsInRole("Administrator, Developer"))
+    {
+        <a asp-action="Create">Add a new car</a>
+    }
 </p>
 <table class="table text-light">
     <thead>
@@ -21,7 +24,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Year)
         </th>
-        <th>Show/Hide to Gallery</th>
+        <th>Put/pull to your Wishlist</th>
         <th></th>
     </tr>
     </thead>
@@ -42,11 +45,21 @@
                     @(item.ToShow ? " - " : " + ")
                 </button>
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
-            </td>
+            @if (User.IsInRole("Administrator, Developer"))
+            {
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.CarId">Details</a>
+                </td>
+            }
+           
         </tr>
     }
     </tbody>
