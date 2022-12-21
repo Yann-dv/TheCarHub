@@ -45,8 +45,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 
     builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
     {
-        facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
-        facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+        facebookOptions.AppId = "Authentication:Facebook:AppId";
+        facebookOptions.AppSecret = "Authentication:Facebook:AppSecret";
     });
 
 /*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
