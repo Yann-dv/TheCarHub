@@ -31,15 +31,18 @@ namespace theCarHub.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
@@ -121,6 +124,22 @@ namespace theCarHub.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            List<string> roleList = new List<string>()
+            {
+                "Admin",
+                "User",
+                "Seller"
+            };
+            //Seed Roles
+            foreach (var role in roleList)
+            {
+                var result = _roleManager.RoleExistsAsync(role).Result;
+                if (!result)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+            
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)

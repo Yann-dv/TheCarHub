@@ -47,7 +47,7 @@ namespace theCarHub.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Role", "dbo");
+                    b.ToTable("Roles", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -230,7 +230,7 @@ namespace theCarHub.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("User", "dbo");
+                    b.ToTable("Users", "dbo");
                 });
 
             modelBuilder.Entity("theCarHub.Data.Car", b =>
