@@ -7,7 +7,7 @@
 <h1 class="text-decoration-underline">Cars in stock</h1>
 
 <p>
-    @if (User.IsInRole("Administrator, Developer"))
+    @if (User.IsInRole("Administrator"))
     {
         <a asp-action="Create">Add a new car</a>
     }
@@ -45,7 +45,7 @@
                     @(item.ToShow ? " - " : " + ")
                 </button>
             </td>
-            @if (User.IsInRole("Administrator, Developer"))
+            @if (User.IsInRole("Administrator"))
             {
                 <td>
                     <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |

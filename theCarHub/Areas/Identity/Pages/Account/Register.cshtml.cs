@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -75,9 +76,11 @@ namespace theCarHub.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            [Required]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
             
+            [Required]
             [Display(Name= "Last name")]
             public string LastName { get; set; }
             
@@ -104,6 +107,9 @@ namespace theCarHub.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            
+            [Required]
+            public string RoleButton { get; set; } = "Default";
         }
 
 
@@ -121,7 +127,7 @@ namespace theCarHub.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.FirstName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -165,7 +171,19 @@ namespace theCarHub.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<ApplicationUser>();
+                var user = new ApplicationUser 
+                { 
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    UserName = Input.FirstName,
+                    NormalizedUserName = Input.FirstName.Normalize(),
+                    Email = Input.Email,
+                    NormalizedEmail = Input.Email.Normalize(),
+                    EmailConfirmed = false,
+                    PasswordHash = Input.Password
+                };
+                return user;
+                //return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
