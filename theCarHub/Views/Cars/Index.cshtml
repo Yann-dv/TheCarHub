@@ -6,10 +6,10 @@
 
 <h1 class="text-decoration-underline">Cars in stock</h1>
 
-<p>
-    @if (User.IsInRole("Administrator"))
+<p class="position-relative">
+    @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Create">Add a new car</a>
+        <a class="fs-3 my-2" asp-action="Create">Add a new car</a>
     }
 </p>
 <table class="table text-light">
@@ -45,7 +45,7 @@
                     @(item.ToShow ? " - " : " + ")
                 </button>
             </td>
-            @if (User.IsInRole("Administrator"))
+            @if (User.IsInRole("Admin"))
             {
                 <td>
                     <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |

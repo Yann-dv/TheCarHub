@@ -124,20 +124,28 @@ namespace theCarHub.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            //Role seeding if they don't exist
             List<string> roleList = new List<string>()
             {
                 "Admin",
                 "User",
                 "Seller"
             };
-            //Seed Roles
-            foreach (var role in roleList)
+            try
             {
-                var result = _roleManager.RoleExistsAsync(role).Result;
-                if (!result)
+                foreach (var role in roleList)
                 {
-                    await _roleManager.CreateAsync(new IdentityRole(role));
+                    var result = _roleManager.RoleExistsAsync(role).Result;
+                    if (!result)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(role));
+                    }
                 }
+            }
+
+            catch(Exception ex)
+            {
+                _logger.LogError("An error occurred seeding the Roles table.");
             }
             
             returnUrl ??= Url.Content("~/");
@@ -153,7 +161,9 @@ namespace theCarHub.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                    
+                    await _userManager.AddToRoleAsync(user, "User");
+                    
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

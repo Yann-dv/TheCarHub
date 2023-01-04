@@ -15,16 +15,6 @@ namespace theCarHub.Data
         {
         }
 
-        /*private static UserManager<ApplicationUser> _userManager;
-        private static RoleManager<IdentityRole> _roleManager;
-
-
-        public ApplicationDbContext(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
-        {
-            _userManager = userManager;
-            _roleManager = roleManager;
-        }*/
-
         protected override async void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

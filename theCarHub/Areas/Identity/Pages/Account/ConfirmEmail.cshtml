@@ -2,7 +2,16 @@
 @model ConfirmEmailModel
 @{
     ViewData["Title"] = "Confirm email";
+    ViewData["Link"] = "Login";
+    
+
 }
 
 <h1>@ViewData["Title"]</h1>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div>
+    <button type="submit" class="btn btn-lg btn-primary">
+        <a class="nav-link text-light active" asp-area="Identity" asp-page="/Account/Login">@ViewData["Link"]</a>
+    </button>
+</div>
