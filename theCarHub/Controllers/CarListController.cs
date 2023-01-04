@@ -35,8 +35,18 @@ namespace theCarHub.Controllers
             var model = userCars.Select(x => new CarViewModel
             {
                 CarId = x.CarId,
-                Name = x.Car.Name,
-                Year = x.Car.Year.Year,
+                Year = x.Car.Year,
+                Brand = x.Car.Make,
+                Model = x.Car.Model,
+                Trim = x.Car.Trim,
+                PurchaseDate = x.Car.PurchaseDate,
+                PurchasePrice = x.Car.PurchasePrice,
+                Repairs = x.Car.Repairs,
+                RepairCost = x.Car.RepairCost,
+                LotDate = x.Car.LotDate,
+                SellingPrice = x.Car.SellingPrice,
+                SaleDate = x.Car.SaleDate,
+                Description = x.Car.Description,
                 Listed = x.Listed,
                 ToShow = true,
                 Rating = x.Rating

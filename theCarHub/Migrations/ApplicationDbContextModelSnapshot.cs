@@ -241,7 +241,41 @@ namespace theCarHub.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LotDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Make")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("PurchasePrice")
+                        .HasColumnType("real");
+
+                    b.Property<float>("RepairCost")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Repairs")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("SellingPrice")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Trim")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

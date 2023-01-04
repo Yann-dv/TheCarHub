@@ -13,18 +13,18 @@
             @Html.DisplayNameFor(model => model.CarId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Year.Year)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Year)
+            @Html.DisplayNameFor(model => model.Brand)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Model)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ToShow)
         </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Listed)
-            </th>
-            <th>
+        <th>
                 @Html.DisplayNameFor(model => model.Rating)
             </th>
         <th></th>
@@ -37,16 +37,16 @@
                 @Html.DisplayFor(modelItem => item.CarId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Year.Year)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Year)
+                @Html.DisplayFor(modelItem => item.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ToShow)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Listed)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Rating)
