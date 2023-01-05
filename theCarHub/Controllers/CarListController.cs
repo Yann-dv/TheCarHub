@@ -56,7 +56,7 @@ namespace theCarHub.Controllers
                     x.UserId == userId && x.CarId == item.CarId);
                 if (userCar != null)
                 { 
-                    item.ToSale = true;
+                    item.CarId = 1;
                 }
             }
             return View(model);

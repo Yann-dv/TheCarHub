@@ -34,6 +34,5 @@ public class CarViewModel
 
     public string Description { get; set; }
     
-    [DefaultValue(false)]
     public bool ToSale { get; set; }
 }

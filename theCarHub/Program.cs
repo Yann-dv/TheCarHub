@@ -20,7 +20,8 @@ else
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString)); /*, sqlServerOptionsAction: sqlOptions =>
+        sqlOptions.EnableRetryOnFailure()));*/
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -91,10 +92,15 @@ app.UseRouting();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//Cars tables seed
+await CarSeed.SeedCarsAsync(app);
+await UserSeed.SeedUsersAsync(app);
 
 app.Run();
 
