@@ -314,11 +314,8 @@ namespace theCarHub.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Listed")
+                    b.Property<bool>("InUserBasket")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
 
                     b.HasKey("UserId", "CarId");
 

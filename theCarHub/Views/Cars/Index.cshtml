@@ -1,11 +1,10 @@
-﻿@using Microsoft.IdentityModel.Tokens
-@model IEnumerable<theCarHub.Models.CarViewModel>
+﻿@model IEnumerable<theCarHub.Models.CarViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1 class="text-decoration-underline">Cars in stock</h1>
+<h1 class="text-decoration-underline">All our cars</h1>
 
 <p>
     @if (User.IsInRole("Admin"))
@@ -13,27 +12,28 @@
         <a class="fs-3 my-2" asp-action="Create">Add a new car</a>
     }
 </p>
-<div class="carList d-flex flex-wrap">
+<div class="carList d-flex flex-wrap flex justify-content-center">
      @foreach (var item in Model)
      {
-         <div class="carItem border border-2 p-2 m-3 w-25 h-auto">
+         <div class="carCard d-flex flex-column justify-content-between border border-2 p-2 m-3 w-25 h-auto">
              <h5>Brand: @Html.DisplayFor(modelItem => item.Brand) | Model: @Html.DisplayFor(modelItem => item.Model)</h5>
              <h6>Trim : @Html.DisplayFor(modelItem => item.Trim)</h6>
              <p>Built in : @Html.DisplayFor(modelItem => item.Year.Year)</p>
-             <p>Price : @Html.DisplayFor(modelItem => item.SellingPrice)</p>
-             <p>Description : @Html.DisplayFor(modelItem => item.Description)</p>
-             
-             @if(item.SaleDate != DateTime.MinValue)
-             {
-                <p>Sold on : @Html.DisplayFor(modelItem => item.SaleDate)</p>
-             }
-             <p>Add to my wish list : 
-                 <button id="@item.CarId" data-val="@item.ToShow" class="text-light ms-5 fs-3 py-0 px-2 btn border border-1 carListToggleBtn">
-                     @(item.ToShow ? " - " : " + ")
-                 </button>
-             </p>
-             @if (User.IsInRole("Admin"))
+             <p>Price : @Html.DisplayFor(modelItem => item.SellingPrice)$</p>
+             <div class="carCardFooter">
+                 <p>Description : @Html.DisplayFor(modelItem => item.Description)</p>
+                 
+                 @if(item.SaleDate != DateTime.MinValue)
+                 {
+                    <p>Sold on : @Html.DisplayFor(modelItem => item.SaleDate)</p>
+                 }
+                    @if (User.IsInRole("Admin"))
                          {
+                             <p>Add to the sales catalog : 
+                                 <button id="@item.CarId" data-val="@item.ToSale" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
+                                     @(item.ToSale ? " - " : " + ")
+                                 </button>
+                             </p>
                              <td>
                                  <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
                                  <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
@@ -46,6 +46,7 @@
                                  <a asp-action="Details" asp-route-id="@item.CarId">Details</a>
                              </td>
                          }
+                 </div>
          </div>
      }
      </div>
@@ -54,9 +55,9 @@
     jQuery(document).ready(function () {
         $('.btn').click(function (e) {
             var btn = $(this);
-            var movieId = btn.attr('id');
-            var movieVal = btn.attr('data-val') == "False" ? 0 : 1;
-            $.get('/Cars/CarListToggler?id=' + movieId + '&val=' + movieVal,
+            var carId = btn.attr('id');
+            var carVal = btn.attr('data-val') === "False" ? 0 : 1;
+            $.get('/Cars/CarListToggler?id=' + carId + '&val=' + carVal,
                 function (data) {
                     if (data === 0) {
                         btn.attr('data-val', 'False');

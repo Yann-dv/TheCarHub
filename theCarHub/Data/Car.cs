@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -47,5 +48,8 @@ namespace theCarHub.Data
         
         [System.ComponentModel.DataAnnotations.Required]
         public string Description{ get; set; }
+        
+        [DefaultValue(false)]
+        public bool ToSale { get; set; }
     }
 }

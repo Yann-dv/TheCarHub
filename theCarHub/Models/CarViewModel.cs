@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace theCarHub.Models;
@@ -32,7 +33,7 @@ public class CarViewModel
     public DateTime SaleDate { get; set; }
 
     public string Description { get; set; }
-    public bool ToShow { get; set; }
-    public bool Listed { get; set; }
-    public int? Rating { get; set; }
+    
+    [DefaultValue(false)]
+    public bool ToSale { get; set; }
 }
