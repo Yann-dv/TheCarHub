@@ -101,6 +101,7 @@ app.UseAuthorization();
 //Cars tables seed
 await CarSeed.SeedCarsAsync(app);
 await UserSeed.SeedUsersAsync(app);
+await UserSeed.SeedSuperAdminAsync(app);
 
 app.Run();
 
