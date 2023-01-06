@@ -29,9 +29,9 @@
                  }
                     @if (User.IsInRole("Admin"))
                          {
-                             <p>Add to the sales catalog : 
-                                 <button id="@item.CarId" data-val="@item.ToSale" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
-                                     @(item.ToSale ? " - " : " + ")
+                             <p>Sold / to sale: 
+                                 <button id="@item.CarId" asp-action="ToSaleToggler" data-val="@item.ToSale" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
+                                 @(item.ToSale ? " + " : " - ")
                                  </button>
                              </p>
                              <td>
@@ -50,7 +50,7 @@
          </div>
      }
      </div>
-@section Scripts {
+<!--@@section Scripts {
     <script>
     jQuery(document).ready(function () {
         $('.btn').click(function (e) {
@@ -72,4 +72,4 @@
         });
     });
     </script>
-}
+}-->

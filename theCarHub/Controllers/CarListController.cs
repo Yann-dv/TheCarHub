@@ -56,7 +56,7 @@ namespace theCarHub.Controllers
                     x.UserId == userId && x.CarId == item.CarId);
                 if (userCar != null)
                 { 
-                    item.CarId = 1;
+                    item.ToSale = true;
                 }
             }
             return View(model);
@@ -85,6 +85,16 @@ namespace theCarHub.Controllers
             return RedirectToAction("Delete", "Cars", new { id });
         }
         
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ToSaleToggler(int? id)
+        {
+            return RedirectToAction("ToSaleToggler", "Cars", new { id });
+        }
+        private bool CarExists(int id)
+        {
+            return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        
         [HttpGet]
         public async Task<JsonResult> CarListToggler(int id, int val)
         {
@@ -92,9 +102,6 @@ namespace theCarHub.Controllers
             var userId = await GetCurrentUserId();
             if (val == 1)
             {
-                // if a record exists in UserCars that contains both the user’s
-                // and car’s Ids, then the car is in the watchlist and can
-                // be removed
                 var car = _context.UserCars?.FirstOrDefault(uc =>
                     uc.CarId == id && uc.UserId == userId);
                 if (car != null)

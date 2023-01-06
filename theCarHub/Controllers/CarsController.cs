@@ -220,6 +220,37 @@ namespace theCarHub.Controllers
         {
           return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        
+        //TODO 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ToSaleToggler(int? id)
+        {
+            if (id == null || _context.Cars == null)
+            {
+                return NotFound();
+            }
+
+            var car = await _context.Cars.FindAsync(id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        
+        //TODO
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToSaleToggler(int id)
+        {
+            if (ModelState.IsValid)
+            {
+               
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
         [HttpGet]
         public async Task<JsonResult> CarListToggler(int id, int val)
