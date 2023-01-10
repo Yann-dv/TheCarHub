@@ -9,6 +9,7 @@ using theCarHub.Models;
 
 namespace theCarHub.Controllers
 {
+    [Authorize]
     public class CarListController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -64,17 +65,17 @@ namespace theCarHub.Controllers
 
             return View(model);
         }
+        
+        public async Task<IActionResult> Details(int? id)
+        {
+            return RedirectToAction("Details", "Cars", new { id });
+        }
 
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return RedirectToAction("Create", "Cars");
             ;
-        }
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            return RedirectToAction("Details", "Cars", new { id });
         }
 
         [Authorize(Roles = "Admin")]
