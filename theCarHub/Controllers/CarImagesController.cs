@@ -1,5 +1,7 @@
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using theCarHub.Models;
 using theCarHub.Data;
 
@@ -19,7 +21,7 @@ namespace theCarHub.Controllers
         // GET
         public async Task<IActionResult> Index()
         {
-            var model = await _context.CarImages.Select(x =>
+            /*var model = await _context.CarImages.Select(x =>
                 new CarImagesModel()
                 {
                     ImageId = x.Id,
@@ -39,7 +41,24 @@ namespace theCarHub.Controllers
                 }
             }
 
-            return View(model);
+            return View(model);*/
+            
+            string BaseUrl = "https://thecarhubapi.azurewebsites.net/";
+            List<CarImagesModel> ListOfImagesUrl = new List<CarImagesModel>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage Res = await client.GetAsync("api/storage/get");
+                
+                if (Res.IsSuccessStatusCode)
+                {
+                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesModel>>(EmpResponse);
+                }
+                return View(ListOfImagesUrl);
+            }
         }
     }
 }

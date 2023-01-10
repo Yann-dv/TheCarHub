@@ -1,4 +1,7 @@
-﻿@model IEnumerable<theCarHub.Models.CarViewModel>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using theCarHub.Controllers
+
+@model Tuple<List<CarViewModel>, List<CarImagesNewModel>?>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,12 +16,18 @@
     }
 </p>
 <div class="carList d-flex flex-wrap flex justify-content-center">
-     @foreach (var item in Model)
+     @foreach (var item in Model.Item1)
      {
          <div class="carCard d-flex flex-column justify-content-between border border-2 p-2 m-3 w-25 h-auto">
              <h5>Brand: @Html.DisplayFor(modelItem => item.Brand) | Model: @Html.DisplayFor(modelItem => item.Model)</h5>
              <h6>Trim : @Html.DisplayFor(modelItem => item.Trim)</h6>
              <p>Built in : @Html.DisplayFor(modelItem => item.Year.Year)</p>
+             <div>
+                 @foreach (var img in Model.Item2)
+                     {
+                         <img src="@Html.DisplayFor(model => img.uri)" alt="Car image" style="width:100px">
+                     }
+             </div>
              @if (item.SaleDate != DateTime.MinValue)
              {
                  <p class="text-decoration-line-through">Price : @Html.DisplayFor(modelItem => item.SellingPrice)$ (SOLD)</p>
@@ -57,26 +66,3 @@
          </div>
      }
      </div>
-<!--@@section Scripts {
-    <script>
-    jQuery(document).ready(function () {
-        $('.btn').click(function (e) {
-            var btn = $(this);
-            var carId = btn.attr('id');
-            var carVal = btn.attr('data-val') === "False" ? 0 : 1;
-            $.post('/Cars/CarListTogglerxx?id=' + carId + '&val=' + carVal ,
-                function (data) {
-                    if (data === 0) {
-                        btn.attr('data-val', 'False');
-                        btn.html(' + ');
-                    }
-                    else if (data === 1) {
-                        btn.attr('data-val', 'True');
-                        btn.html(' - ');
-                    }
-                }*/
-            );
-        });
-    });
-    </script>
-}-->

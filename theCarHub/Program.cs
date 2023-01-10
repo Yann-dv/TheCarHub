@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using theCarHub.Controllers;
 using theCarHub.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -70,6 +71,8 @@ else if (builder.Configuration["Authentication:Facebook:AppId"] != null && Envir
     });
 }
 
+builder.Services.AddScoped<ApiController>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -89,6 +92,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -98,7 +102,7 @@ app.MapRazorPages();
 app.UseAuthentication();
 app.UseAuthorization();
 
-//Cars tables seed
+//Cars and users tables seed
 await CarSeed.SeedCarsAsync(app);
 await UserSeed.SeedUsersAsync(app);
 await UserSeed.SeedSuperAdminAsync(app);

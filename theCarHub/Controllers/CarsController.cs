@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using theCarHub.Models;
 
 namespace theCarHub.Controllers
@@ -12,11 +14,13 @@ namespace theCarHub.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApiController _apiController;
 
-        public CarsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CarsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ApiController apiController)
         {
             _context = context;
             _userManager = userManager;
+            _apiController = apiController;
         }
 
         [HttpGet]
@@ -51,10 +55,36 @@ namespace theCarHub.Controllers
                         Description = x.Description,
                         ToSale = x.ToSale
                     }).ToListAsync();
-
-            return View(model);
+            
+            string BaseUrl = "https://thecarhubapi.azurewebsites.net/";
+            List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
+            using (var client = new HttpClient())
+            {
+                //Passing service base url
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //Sending request to find web api REST service resource GetAllEmployees using HttpClient
+                HttpResponseMessage Res = await client.GetAsync("api/storage/get");
+                //Checking the response is successful or not which is sent using HttpClient
+                if (Res.IsSuccessStatusCode)
+                {
+                    //Storing the response details recieved from web api
+                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                    //Deserializing the response recieved from web api and storing into the Employee list
+                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(EmpResponse);
+                }
+            }
+            return View(Tuple.Create(model,ListOfImagesUrl));
         }
         
+        //Get : car images 
+        /*public async Task<IActionResult> GetCarImages()
+        {
+            return RedirectToAction("Indexz", "Api");
+        }*/
+
         // GET: Cars/Details/5
         public async Task<IActionResult> Details(int? id)
         {
