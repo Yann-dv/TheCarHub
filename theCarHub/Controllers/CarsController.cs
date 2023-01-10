@@ -32,35 +32,6 @@ namespace theCarHub.Controllers
         // GET: Cars
         public async Task<IActionResult> Index()
         {
-
-            /*var userId = await GetCurrentUserId();
-            var userCars = _context.UserCars.Where(x => x.UserId == userId);
-            var model = userCars.Select(x => new CarViewModel
-            {
-                CarId = x.CarId,
-                Year = x.Car.Year,
-                Brand = x.Car.Make,
-                Model = x.Car.Model,
-                Trim = x.Car.Trim,
-                PurchaseDate = x.Car.PurchaseDate,
-                PurchasePrice = x.Car.PurchasePrice,
-                Repairs = x.Car.Repairs,
-                RepairCost = x.Car.RepairCost,
-                LotDate = x.Car.LotDate,
-                SellingPrice = x.Car.SellingPrice,
-                SaleDate = x.Car.SaleDate,
-                Description = x.Car.Description,
-            }).ToList();
-            
-            foreach (var item in model)
-            {
-                var userCar = await _context.UserCars.FirstOrDefaultAsync(x =>
-                    x.UserId == userId && x.CarId == item.CarId);
-                if (userCar != null)
-                { 
-                    item.ToSale = true;
-                }
-            }*/
             var model = await _context.Cars.Where(c => c.ToSale == true)
                 .Select(x =>
                     new CarViewModel
@@ -83,7 +54,7 @@ namespace theCarHub.Controllers
 
             return View(model);
         }
-
+        
         // GET: Cars/Details/5
         public async Task<IActionResult> Details(int? id)
         {

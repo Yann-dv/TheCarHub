@@ -7,5 +7,6 @@ public class CarImages
     public int Id { get; set; }
     
     public int CarId { get; set; }
+    
     public string ImageUrl { get; set; }
 }
