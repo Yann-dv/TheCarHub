@@ -4,61 +4,60 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="text-decoration-underline">Cars in stock</h1>
+<h1 class="text-decoration-underline">All our cars</h1>
 
 <p>
-    <a asp-action="Create">Add a new car</a>
-</p>
-<table class="table text-light">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CarId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Year)
-        </th>
-        <th>Show/Hide to Gallery</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                <button id="@item.CarId" data-val="@item.ToShow" class="btn carListToggleBtn">
-                    @(item.ToShow ? " - " : " + ")
-                </button>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
-            </td>
-        </tr>
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="fs-3 my-2" asp-action="Create">Add a new car</a>
     }
-    </tbody>
-</table>
-@section Scripts {
+</p>
+<div class="carList d-flex flex-wrap flex justify-content-center">
+     @foreach (var item in Model)
+     {
+         <div class="carCard d-flex flex-column justify-content-between border border-2 p-2 m-3 w-25 h-auto">
+             <h5>Brand: @Html.DisplayFor(modelItem => item.Brand) | Model: @Html.DisplayFor(modelItem => item.Model)</h5>
+             <h6>Trim : @Html.DisplayFor(modelItem => item.Trim)</h6>
+             <p>Built in : @Html.DisplayFor(modelItem => item.Year.Year)</p>
+             <p>Price : @Html.DisplayFor(modelItem => item.SellingPrice)$</p>
+             <div class="carCardFooter">
+                 <p>Description : @Html.DisplayFor(modelItem => item.Description)</p>
+                 
+                 @if(item.SaleDate != DateTime.MinValue)
+                 {
+                    <p>Sold on : @Html.DisplayFor(modelItem => item.SaleDate)</p>
+                 }
+                    @if (User.IsInRole("Admin"))
+                         {
+                             <p>Sold / to sale: 
+                                 <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "Cars", new {id= @item.CarId, toSaleValue= @item.ToSale })'" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
+                                    @(item.ToSale ? " - " : " + ")
+                                 </button>
+                             </p>
+                             <td>
+                                 <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
+                                 <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
+                                 <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
+                             </td>
+                         }
+                         else
+                         {
+                             <td>
+                                 <a asp-action="Details" asp-route-id="@item.CarId">Details</a>
+                             </td>
+                         }
+                 </div>
+         </div>
+     }
+     </div>
+<!--@@section Scripts {
     <script>
     jQuery(document).ready(function () {
         $('.btn').click(function (e) {
             var btn = $(this);
-            var movieId = btn.attr('id');
-            var movieVal = btn.attr('data-val') == "False" ? 0 : 1;
-            $.get('/Cars/CarListToggler?id=' + movieId + '&val=' + movieVal,
+            var carId = btn.attr('id');
+            var carVal = btn.attr('data-val') === "False" ? 0 : 1;
+            $.post('/Cars/CarListTogglerxx?id=' + carId + '&val=' + carVal ,
                 function (data) {
                     if (data === 0) {
                         btn.attr('data-val', 'False');
@@ -68,9 +67,9 @@
                         btn.attr('data-val', 'True');
                         btn.html(' - ');
                     }
-                }
+                }*/
             );
         });
     });
     </script>
-}
+}-->

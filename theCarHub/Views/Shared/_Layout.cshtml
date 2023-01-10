@@ -22,16 +22,28 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="nav nav-pills">
                     <li class="nav-item">
-                            <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                            <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/CarList" ? "active" : "")" asp-area="" asp-controller="CarList" asp-action="Index">Car gallery</a>
+                        <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/Cars" ? "active" : "")" asp-area="" asp-controller="Cars" asp-action="Index">Cars</a>
                     </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/CarList" ? "active" : "")" asp-area="" asp-controller="CarList" asp-action="Index">Cars manager</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("SuperAdmin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/RoleManager" ? "active" : "")" asp-area="" asp-controller="RoleManager" asp-action="Index">Role manager</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/UserRoles" ? "active" : "")" asp-area="" asp-controller="UserRoles" asp-action="Index">User Roles manager</a>
+                        </li>
+                    }
                     <li class="nav-item">
-                            <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/Cars" ? "active" : "")" asp-area="" asp-controller="Cars" asp-action="Index">Cars</a>
-                    </li>
-                    <li class="nav-item">
-                            <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/Home/Privacy" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/Home/Privacy" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
                 </ul>
                 <partial name="_LoginPartial" />

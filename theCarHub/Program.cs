@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
@@ -17,14 +18,18 @@ else
     connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 }
 
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString)); /*, sqlServerOptionsAction: sqlOptions =>
+        sqlOptions.EnableRetryOnFailure()));*/
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     {
         // User settings.
         options.User.RequireUniqueEmail = true;
+        options.SignIn.RequireConfirmedAccount = true;
         options.User.AllowedUserNameCharacters =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
 
@@ -39,11 +44,24 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
         options.Lockout.MaxFailedAccessAttempts = 3;
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
     })
-    //.AddDefaultUI(UIFramework.Bootstrap4)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultUI()
     .AddDefaultTokenProviders();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
-if (builder.Configuration["Authentication:Facebook:AppId"] != null)
+
+if (builder.Configuration["Authentication:Facebook:AppId"] == null && Environment.GetEnvironmentVariable("Facebook_AppId") != null)
+{
+    builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
+    {
+        facebookOptions.AppId = Environment.GetEnvironmentVariable("Facebook_AppId");
+        facebookOptions.AppSecret = Environment.GetEnvironmentVariable("FACEBOOK_PROVIDER_AUTHENTICATION_SECRET");
+    });
+}
+
+else if (builder.Configuration["Authentication:Facebook:AppId"] != null && Environment.GetEnvironmentVariable("Facebook_AppId") == null)
 {
     builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
     {
@@ -51,11 +69,6 @@ if (builder.Configuration["Authentication:Facebook:AppId"] != null)
         facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
     });
 }
-
-/*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();*/
-builder.Services.AddRazorPages();
-builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -76,12 +89,19 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
+//Cars tables seed
+await CarSeed.SeedCarsAsync(app);
+await UserSeed.SeedUsersAsync(app);
+await UserSeed.SeedSuperAdminAsync(app);
+
 app.Run();
+

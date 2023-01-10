@@ -30,7 +30,7 @@ namespace theCarHub.Areas.Identity.Pages.Account.Manage
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string Username { get; set; }
+        ///public string Username { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -57,6 +57,10 @@ namespace theCarHub.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [Display(Name = "Username")]
+            public string Username { get; set; }
+            
+            [Required]
             [EmailAddress]
             public string Email { get; set; }
             
@@ -65,6 +69,7 @@ namespace theCarHub.Areas.Identity.Pages.Account.Manage
             
             [Display(Name= "Last name")]
             public string LastName { get; set; }
+            
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -76,10 +81,9 @@ namespace theCarHub.Areas.Identity.Pages.Account.Manage
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-            Username = userName;
-
             Input = new InputModel
             {
+                Username = userName,
                 Email = email,
                 PhoneNumber = phoneNumber,
                 FirstName = user.FirstName,
@@ -110,13 +114,31 @@ namespace theCarHub.Areas.Identity.Pages.Account.Manage
             {
                 return Page();
             }
+            if (Input.Username != user.UserName)
+            {
+                var userNameExists = await _userManager.FindByNameAsync(Input.Username);
+                if (userNameExists != null)
+                {
+                    StatusMessage = "User name already taken. Select a different username.";
+                    return RedirectToPage();
+                }
+                var setUserName = await _userManager.SetUserNameAsync(user, Input.Username);
+                if (!setUserName.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set user name.";
+                    return RedirectToPage();
+                }
+                await _userManager.UpdateAsync(user);
+            }
             if (Input.FirstName != user.FirstName)
             {
                 user.FirstName = Input.FirstName;
+                await _userManager.UpdateAsync(user);
             }
             if (Input.LastName != user.LastName)
             {
                 user.LastName = Input.LastName;
+                await _userManager.UpdateAsync(user);
             }
 
             if (!ModelState.IsValid)

@@ -1,58 +1,98 @@
-﻿@model IEnumerable<theCarHub.Models.CarViewModel>
+﻿@using System.Globalization
+@model IEnumerable<theCarHub.Models.CarViewModel>
 
 @{
-    ViewData["Title"] = "Cars gallery";
+    ViewData["Title"] = "Cars manager";
 }
 
-<h1 class="text-decoration-underline">All our cars</h1>
+<h1 class="text-decoration-underline">All the cars</h1>
+<a class="fs-3 my-2" asp-action="Create">Add a new car</a>
+
 
 <table class="table text-light">
     <thead>
-    <tr>
+    <tr class="text-center">
         <th>
             @Html.DisplayNameFor(model => model.CarId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Year.Year)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Year)
+            @Html.DisplayNameFor(model => model.Brand)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ToShow)
+            @Html.DisplayNameFor(model => model.Model)
         </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Listed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchasePrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SellingPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ToSale)
+        </th>
+        <th>Actions</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
     @foreach (var item in Model) {
-        <tr>
+        <tr class="text-center">
             <td>
                 @Html.DisplayFor(modelItem => item.CarId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Year.Year)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Year)
+                @Html.DisplayFor(modelItem => item.Brand)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ToShow)
+                @Html.DisplayFor(modelItem => item.Model)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Listed)
+                @Html.DisplayFor(modelItem => item.PurchasePrice)$
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rating)
+                @Html.DisplayFor(modelItem => item.SellingPrice)$
             </td>
-
+            <td>
+                <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "CarList", new {id= @item.CarId, toSaleValue= @item.ToSale })'" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
+                     @(item.ToSale ? " - " : " + ")
+                </button>
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
+            </td>
         </tr>
     }
     </tbody>
 </table>
+
+<!--@@section Scripts {
+    <script>
+    jQuery(document).ready(function () {
+        $('.btn').click(function (e) {
+            var btn = $(this);
+            var carId = btn.attr('id');
+            var carVal = btn.attr('data-val') === "False" ? 0 : 1;
+            $.get('/CarList/SetOnSale?id=' + carId + '&val=' + carVal,
+                function (data) {
+                    if (data === 0) {
+                        btn.attr('data-val', 'False');
+                        btn.html(' + ');
+                    }
+                    else if (data === 1) {
+                        btn.attr('data-val', 'True');
+                        btn.html(' - ');
+                    }
+                }
+            );
+        });
+    });
+    </script>
+}-->

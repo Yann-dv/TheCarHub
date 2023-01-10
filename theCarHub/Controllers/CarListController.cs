@@ -1,6 +1,9 @@
 ﻿using System.Globalization;
+using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
 using theCarHub.Models;
 
@@ -30,19 +33,85 @@ namespace theCarHub.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var id = await GetCurrentUserId();
-            var userCars = _context.UserCars.Where(x => x.UserId == id);
-            var model = userCars.Select(x => new CarViewModel
+            var userId = await GetCurrentUserId();
+            var model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars.Select(x =>
+                new CarViewModel
+                {
+                    CarId = x.Id,
+                    Year = x.Year,
+                    Brand = x.Make,
+                    Model = x.Model,
+                    Trim = x.Trim,
+                    PurchaseDate = x.PurchaseDate,
+                    PurchasePrice = x.PurchasePrice,
+                    Repairs = x.Repairs,
+                    RepairCost = x.RepairCost,
+                    LotDate = x.LotDate,
+                    SellingPrice = x.SellingPrice,
+                    SaleDate = x.SaleDate,
+                    Description = x.Description,
+                    ToSale = x.ToSale
+                }));
+            foreach (var item in model)
             {
-                CarId = x.CarId,
-                Name = x.Car.Name,
-                Year = x.Car.Year.Year,
-                Listed = x.Listed,
-                ToShow = true,
-                Rating = x.Rating
-            }).ToList();
+                var userCar = await _context.UserCars.FirstOrDefaultAsync(x =>
+                    x.UserId == userId && x.CarId == item.CarId);
+                if (userCar != null)
+                {
+                    item.ToSale = true;
+                }
+            }
 
             return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create()
+        {
+            return RedirectToAction("Create", "Cars");
+            ;
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            return RedirectToAction("Details", "Cars", new { id });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            return RedirectToAction("Edit", "Cars", new { id });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            return RedirectToAction("Delete", "Cars", new { id });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SoldToggler(int id, bool toSaleValue)
+        {
+            var car = _context.Cars?.FirstOrDefault(c => c.Id == id);
+
+            if (car != null)
+            {
+                switch (toSaleValue)
+                {
+                    case true:
+                        car.ToSale = false;
+                        break;
+                    case false:
+                        car.ToSale = true;
+                        break;
+                }
+
+                _context.Cars.Update(car);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

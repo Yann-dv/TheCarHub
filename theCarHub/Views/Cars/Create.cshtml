@@ -6,27 +6,76 @@
 
 <h1 class="text-decoration-underline">Create</h1>
 
-<h4>Car</h4>
+<h4>New car details</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+<div class="container">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-4">
+            <div class="form-group my-3">
                 <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" id="datepicker"/>
+                <input asp-for="Year" class="form-control"/>
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
             <div class="form-group my-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="Make" class="control-label">Brand</label>
+                <input asp-for="Make" class="form-control"/>
+                <span asp-validation-for="Make" class="text-danger"></span>
             </div>
-        </form>
-    </div>
+            <div class="form-group my-3">
+                <label asp-for="Model" class="control-label"></label>
+                <input asp-for="Model" class="form-control"/>
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <label asp-for="Trim" class="control-label"></label>
+                <input asp-for="Trim" class="form-control"/>
+                <span asp-validation-for="Trim" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <label asp-for="PurchaseDate" class="control-label">Date of purchase</label>
+                <input asp-for="PurchaseDate" class="form-control"/>
+                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+            </div>
+                <div class="form-group my-3">
+                    <label asp-for="PurchasePrice" class="control-label">Price of purchase</label>
+                    <input asp-for="PurchasePrice" class="form-control"/>
+                    <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+                </div>
+                </div>
+            <div class="col-md-4">
+            <div class="form-group my-3">
+                <label asp-for="Repairs" class="control-label">Repairs done</label>
+                <input asp-for="Repairs" class="form-control"/>
+                <span asp-validation-for="Repairs" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <label asp-for="RepairCost" class="control-label">Repair cost</label>
+                <input asp-for="RepairCost" class="form-control"/>
+                <span asp-validation-for="RepairCost" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <label asp-for="LotDate" class="control-label">Lot date</label>
+                <input asp-for="LotDate" class="form-control"/>
+                <span asp-validation-for="LotDate" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <label asp-for="SellingPrice" class="control-label">Sale price</label>
+                <input asp-for="SellingPrice" class="form-control"/>
+                <span asp-validation-for="SellingPrice" class="text-danger"></span>
+            </div>
+                <div class="form-group my-3">
+                    <label asp-for="Description" class="control-label">Car description</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                </div>
+            <div class="form-group my-3">
+                <input type="submit" value="Create" class="btn btn-primary"/>
+            </div>
+        </div>
+    </form>
 </div>
 
 <div class="my-4">
