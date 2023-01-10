@@ -58,7 +58,7 @@ public class CarSeed
                         RepairCost = 690.00f,
                         LotDate = new DateTime(2022, 08, 04, 00, 00, 00, 0000000),
                         SellingPrice = 2990.00f,
-                        SaleDate = new DateTime(1991, 01, 01, 00, 00, 00, 0000000),
+                        SaleDate = DateTime.MinValue,
                         Description = "Perfect for travellers",
                         ToSale = false
                     },
@@ -74,7 +74,7 @@ public class CarSeed
                         RepairCost = 1100.00f,
                         LotDate = new DateTime(2022, 09, 04, 00, 00, 00, 0000000),
                         SellingPrice = 25950.00f,
-                        SaleDate = new DateTime(1991, 01, 01, 00, 00, 00, 0000000),
+                        SaleDate = DateTime.MinValue,
                         Description = "Luxury Ford car",
                         ToSale = false
                     },
@@ -104,9 +104,9 @@ public class CarSeed
                         PurchasePrice = 15250.00f,
                         Repairs = "Tires",
                         RepairCost = 440.00f,
-                        LotDate = new DateTime(202, 10, 04, 00, 00, 00, 0000000),
+                        LotDate = new DateTime(2022, 10, 04, 00, 00, 00, 0000000),
                         SellingPrice = 16190.00f,
-                        SaleDate = new DateTime(2022, 12, 01, 00, 00, 00, 0000000),
+                        SaleDate = DateTime.MinValue,
                         Description = "Deutch qualitat",
                         ToSale = false
                     },

@@ -74,7 +74,12 @@
             @Html.DisplayNameFor(model => model.SaleDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SaleDate)
+            @if(this.Model.SaleDate == DateTime.MinValue) {
+                <p>Not sold</p>
+            }
+            else{
+                @Html.DisplayFor(model => model.SaleDate)
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)

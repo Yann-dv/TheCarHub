@@ -19,7 +19,14 @@
              <h5>Brand: @Html.DisplayFor(modelItem => item.Brand) | Model: @Html.DisplayFor(modelItem => item.Model)</h5>
              <h6>Trim : @Html.DisplayFor(modelItem => item.Trim)</h6>
              <p>Built in : @Html.DisplayFor(modelItem => item.Year.Year)</p>
-             <p>Price : @Html.DisplayFor(modelItem => item.SellingPrice)$</p>
+             @if (item.SaleDate != DateTime.MinValue)
+             {
+                 <p class="text-decoration-line-through">Price : @Html.DisplayFor(modelItem => item.SellingPrice)$ (SOLD)</p>
+             }
+             else
+             {
+                <p>Price : @Html.DisplayFor(modelItem => item.SellingPrice)$</p>
+             }
              <div class="carCardFooter">
                  <p>Description : @Html.DisplayFor(modelItem => item.Description)</p>
                  
@@ -50,26 +57,3 @@
          </div>
      }
      </div>
-<!--@@section Scripts {
-    <script>
-    jQuery(document).ready(function () {
-        $('.btn').click(function (e) {
-            var btn = $(this);
-            var carId = btn.attr('id');
-            var carVal = btn.attr('data-val') === "False" ? 0 : 1;
-            $.post('/Cars/CarListTogglerxx?id=' + carId + '&val=' + carVal ,
-                function (data) {
-                    if (data === 0) {
-                        btn.attr('data-val', 'False');
-                        btn.html(' + ');
-                    }
-                    else if (data === 1) {
-                        btn.attr('data-val', 'True');
-                        btn.html(' - ');
-                    }
-                }*/
-            );
-        });
-    });
-    </script>
-}-->

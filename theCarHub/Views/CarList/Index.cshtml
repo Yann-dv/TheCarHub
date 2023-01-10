@@ -31,6 +31,9 @@
             @Html.DisplayNameFor(model => model.SellingPrice)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.SaleDate)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.ToSale)
         </th>
         <th>Actions</th>
@@ -59,6 +62,14 @@
                 @Html.DisplayFor(modelItem => item.SellingPrice)$
             </td>
             <td>
+                @if(item.SaleDate == DateTime.MinValue) {
+                    <p>-</p>
+                }
+                else{
+                    @Html.DisplayFor(modelItem => item.SaleDate)
+                }
+            </td>
+            <td>
                 <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "CarList", new {id= @item.CarId, toSaleValue= @item.ToSale })'" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
                      @(item.ToSale ? " - " : " + ")
                 </button>
@@ -72,27 +83,3 @@
     }
     </tbody>
 </table>
-
-<!--@@section Scripts {
-    <script>
-    jQuery(document).ready(function () {
-        $('.btn').click(function (e) {
-            var btn = $(this);
-            var carId = btn.attr('id');
-            var carVal = btn.attr('data-val') === "False" ? 0 : 1;
-            $.get('/CarList/SetOnSale?id=' + carId + '&val=' + carVal,
-                function (data) {
-                    if (data === 0) {
-                        btn.attr('data-val', 'False');
-                        btn.html(' + ');
-                    }
-                    else if (data === 1) {
-                        btn.attr('data-val', 'True');
-                        btn.html(' - ');
-                    }
-                }
-            );
-        });
-    });
-    </script>
-}-->
