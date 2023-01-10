@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
@@ -34,102 +35,83 @@ namespace theCarHub.Controllers
         {
             var userId = await GetCurrentUserId();
             var model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars.Select(x =>
-                            new CarViewModel
-                            {
-                                CarId = x.Id,
-                                Year = x.Year,
-                                Brand = x.Make,
-                                Model = x.Model,
-                                Trim = x.Trim,
-                                PurchaseDate = x.PurchaseDate,
-                                PurchasePrice = x.PurchasePrice,
-                                Repairs = x.Repairs,
-                                RepairCost = x.RepairCost,
-                                LotDate = x.LotDate,
-                                SellingPrice = x.SellingPrice,
-                                SaleDate = x.SaleDate,
-                                Description = x.Description,
-                            }));
+                new CarViewModel
+                {
+                    CarId = x.Id,
+                    Year = x.Year,
+                    Brand = x.Make,
+                    Model = x.Model,
+                    Trim = x.Trim,
+                    PurchaseDate = x.PurchaseDate,
+                    PurchasePrice = x.PurchasePrice,
+                    Repairs = x.Repairs,
+                    RepairCost = x.RepairCost,
+                    LotDate = x.LotDate,
+                    SellingPrice = x.SellingPrice,
+                    SaleDate = x.SaleDate,
+                    Description = x.Description,
+                    ToSale = x.ToSale
+                }));
             foreach (var item in model)
             {
                 var userCar = await _context.UserCars.FirstOrDefaultAsync(x =>
                     x.UserId == userId && x.CarId == item.CarId);
                 if (userCar != null)
-                { 
+                {
                     item.ToSale = true;
                 }
             }
+
             return View(model);
         }
-        
+
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            return RedirectToAction("Create", "Cars");;
+            return RedirectToAction("Create", "Cars");
+            ;
         }
-        
+
         public async Task<IActionResult> Details(int? id)
         {
             return RedirectToAction("Details", "Cars", new { id });
         }
-        
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             return RedirectToAction("Edit", "Cars", new { id });
         }
-        
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             return RedirectToAction("Delete", "Cars", new { id });
         }
-        
+
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ToSaleToggler(int? id)
+        public async Task<IActionResult> SoldToggler(int id, bool toSaleValue)
         {
-            return RedirectToAction("ToSaleToggler", "Cars", new { id });
-        }
-        private bool CarExists(int id)
-        {
-            return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-        
-        [HttpGet]
-        public async Task<JsonResult> CarListToggler(int id, int val)
-        {
-            int retval = -1;
-            var userId = await GetCurrentUserId();
-            if (val == 1)
+            var car = _context.Cars?.FirstOrDefault(c => c.Id == id);
+
+            if (car != null)
             {
-                var car = _context.UserCars?.FirstOrDefault(uc =>
-                    uc.CarId == id && uc.UserId == userId);
-                if (car != null)
+                switch (toSaleValue)
                 {
-                    _context.UserCars?.Remove(car);
-                    retval = 0;
+                    case true:
+                        car.ToSale = false;
+                        break;
+                    case false:
+                        car.ToSale = true;
+                        break;
                 }
 
+                _context.Cars.Update(car);
+
+                await _context.SaveChangesAsync();
             }
-            else
-            {
-                // the car is not currently in the watchlist, so we need to
-                // build a new UserCar object and add it to the database
-                _context.UserCars.Add(
-                    new UserCar
-                    {
-                        UserId = userId,
-                        CarId = id,
-                        InUserBasket = false
-                    }
-                );
-                retval = 1;
-            }
-           
-            await _context.SaveChangesAsync(); // now we can save the changes to the database
-            // and our return value (-1, 0, or 1) back to the script that called
-            // this method from the Index page
-            return Json(retval);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

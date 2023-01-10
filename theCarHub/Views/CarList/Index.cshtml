@@ -59,8 +59,8 @@
                 @Html.DisplayFor(modelItem => item.SellingPrice)$
             </td>
             <td>
-                <button id="@item.CarId" asp-action="ToSaleToggler" data-val="@item.ToSale" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
-                    @(item.ToSale == false ? " + " : " - ")
+                <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "CarList", new {id= @item.CarId, toSaleValue= @item.ToSale })'" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
+                     @(item.ToSale ? " - " : " + ")
                 </button>
             </td>
             <td>

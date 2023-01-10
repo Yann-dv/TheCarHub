@@ -63,22 +63,23 @@ namespace theCarHub.Controllers
             }*/
             var model = await _context.Cars.Where(c => c.ToSale == true)
                 .Select(x =>
-                new CarViewModel
-                {
-                    CarId = x.Id,
-                    Year = x.Year,
-                    Brand = x.Make,
-                    Model = x.Model,
-                    Trim = x.Trim,
-                    PurchaseDate = x.PurchaseDate,
-                    PurchasePrice = x.PurchasePrice,
-                    Repairs = x.Repairs,
-                    RepairCost = x.RepairCost,
-                    LotDate = x.LotDate,
-                    SellingPrice = x.SellingPrice,
-                    SaleDate = x.SaleDate,
-                    Description = x.Description,
-                }).ToListAsync();
+                    new CarViewModel
+                    {
+                        CarId = x.Id,
+                        Year = x.Year,
+                        Brand = x.Make,
+                        Model = x.Model,
+                        Trim = x.Trim,
+                        PurchaseDate = x.PurchaseDate,
+                        PurchasePrice = x.PurchasePrice,
+                        Repairs = x.Repairs,
+                        RepairCost = x.RepairCost,
+                        LotDate = x.LotDate,
+                        SellingPrice = x.SellingPrice,
+                        SaleDate = x.SaleDate,
+                        Description = x.Description,
+                        ToSale = x.ToSale
+                    }).ToListAsync();
 
             return View(model);
         }
@@ -113,7 +114,10 @@ namespace theCarHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")] Car car)
+        public async Task<IActionResult> Create(
+            [Bind(
+                "Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
+            Car car)
         {
             if (ModelState.IsValid)
             {
@@ -121,6 +125,7 @@ namespace theCarHub.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(car);
         }
 
@@ -138,16 +143,20 @@ namespace theCarHub.Controllers
             {
                 return NotFound();
             }
+
             return View(car);
         }
-        
+
         [Authorize(Roles = "Admin")]
         // POST: Cars/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")] Car car)
+        public async Task<IActionResult> Edit(int id,
+            [Bind(
+                "Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
+            Car car)
         {
             if (id != car.Id)
             {
@@ -172,8 +181,10 @@ namespace theCarHub.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(car);
         }
 
@@ -195,7 +206,7 @@ namespace theCarHub.Controllers
 
             return View(car);
         }
-        
+
         [Authorize(Roles = "Admin")]
         // POST: Cars/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -206,91 +217,45 @@ namespace theCarHub.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Cars'  is null.");
             }
+
             var car = await _context.Cars.FindAsync(id);
             if (car != null)
             {
                 _context.Cars.Remove(car);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CarExists(int id)
         {
-          return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-        
-        //TODO 
+
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ToSaleToggler(int? id)
+        public async Task<IActionResult> SoldToggler(int id, bool toSaleValue)
         {
-            if (id == null || _context.Cars == null)
+            var car = _context.Cars?.FirstOrDefault(c => c.Id == id);
+
+            if (car != null)
             {
-                return NotFound();
+                switch (toSaleValue)
+                {
+                    case true:
+                        car.ToSale = false;
+                        break;
+                    case false:
+                        car.ToSale = true;
+                        break;
+                }
+
+                _context.Cars.Update(car);
+
+                await _context.SaveChangesAsync();
             }
 
-            var car = await _context.Cars.FindAsync(id);
-            if (car == null)
-            {
-                return NotFound();
-            }
             return RedirectToAction(nameof(Index));
         }
-        
-        //TODO
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ToSaleToggler(int id)
-        {
-            if (ModelState.IsValid)
-            {
-               
-                return RedirectToAction(nameof(Index));
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public async Task<JsonResult> CarListToggler(int id, int val)
-        {
-            int retval = -1;
-            var userId = await GetCurrentUserId();
-            if (val == 1)
-            {
-                   // if a record exists in UserCars that contains both the user’s
-                    // and car’s Ids, then the car is in the watchlist and can
-                    // be removed
-                var car = _context.UserCars?.FirstOrDefault(uc =>
-                    uc.CarId == id && uc.UserId == userId);
-                if (car != null)
-                    {
-                        _context.UserCars?.Remove(car);
-                        retval = 0;
-                    }
-
-            }
-            else
-            {
-                    // the car is not currently in the watchlist, so we need to
-                    // build a new UserCar object and add it to the database
-                _context.UserCars.Add(
-                new UserCar
-                    {
-                        UserId = userId,
-                        CarId = id,
-                        InUserBasket = false
-                    }
-                );
-            retval = 1;
-            }
-
-            
-            await _context.SaveChangesAsync(); // now we can save the changes to the database
-            // and our return value (-1, 0, or 1) back to the script that called
-            // this method from the Index page
-        return Json(retval);
-       }
     }
 }
