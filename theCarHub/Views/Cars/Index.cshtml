@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using theCarHub.Controllers
+@using Humanizer
 
 @model Tuple<List<CarViewModel>, List<CarImagesNewModel>?>
 
@@ -18,42 +19,37 @@
 <div class="carList d-flex flex-wrap flex justify-content-center">
      @foreach (var item in Model.Item1)
      {
-         <div class="carCard d-flex flex-column justify-content-between border border-2 p-2 m-3 w-25 h-auto">
-             <h5>Brand: @Html.DisplayFor(modelItem => item.Brand) | Model: @Html.DisplayFor(modelItem => item.Model)</h5>
+         <div class="car-body carCard d-flex flex-column justify-content-between border bg-secondary rounded p-2 m-3 w-25 h-auto">
+             <h5 class="car-title" >@Html.DisplayFor(modelItem => item.Brand) | @Html.DisplayFor(modelItem => item.Model)</h5>
              <h6>Trim : @Html.DisplayFor(modelItem => item.Trim)</h6>
              <p>Built in : @Html.DisplayFor(modelItem => item.Year.Year)</p>
              <div>
-                 @foreach (var img in Model.Item2)
+                 @foreach (var image in Model.Item2.Where(img => img.name.ToString().ToLower().Replace(" ", "").Replace(".jpg", "") == ((item.Brand + "-" + item.Model + "-"+ item.Trim + "-" + item.Year.Year).ToLower().Replace(" ", ""))))
                      {
-                         <img src="@Html.DisplayFor(model => img.uri)" alt="Car image" style="width:100px">
+                         <img src="@Html.DisplayFor(model => image.uri)" alt="Image of @item.Brand @item.Model" title="Image of @item.Brand @item.Model" class="card-img" style="height:200px;">
                      }
              </div>
+             <p class="my-2">Description : @Html.DisplayFor(modelItem => item.Description)</p>
              @if (item.SaleDate != DateTime.MinValue)
              {
-                 <p class="text-decoration-line-through">Price : @Html.DisplayFor(modelItem => item.SellingPrice)$ (SOLD)</p>
+                 <p class="text-decoration-line-through">Price : @Html.DisplayFor(modelItem => item.SellingPrice)$ (SOLD) <spans>| Sold on : @Html.DisplayFor(modelItem => item.SaleDate)</spans></p>
              }
              else
              {
-                <p>Price : @Html.DisplayFor(modelItem => item.SellingPrice)$</p>
+                 <p>Price : <span class="text-decoration-underline">@Html.DisplayFor(modelItem => item.SellingPrice)$</span></p>
              }
              <div class="carCardFooter">
-                 <p>Description : @Html.DisplayFor(modelItem => item.Description)</p>
-                 
-                 @if(item.SaleDate != DateTime.MinValue)
-                 {
-                    <p>Sold on : @Html.DisplayFor(modelItem => item.SaleDate)</p>
-                 }
-                    @if (User.IsInRole("Admin"))
+                 @if (User.IsInRole("Admin"))
                          {
                              <p>Sold / to sale: 
-                                 <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "Cars", new {id= @item.CarId, toSaleValue= @item.ToSale })'" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
+                                 <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "Cars", new {id= @item.CarId, toSaleValue= @item.ToSale })'" class="btn @(item.ToSale ? "btn-danger" : "btn-success") text-light ms-3 fs-5 py-0 px-2 carListToggleBtn">
                                     @(item.ToSale ? " - " : " + ")
                                  </button>
                              </p>
                              <td>
-                                 <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
-                                 <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
-                                 <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
+                                <a asp-action="Details" asp-route-id="@item.CarId" class="btn btn-primary link-light">Details</a> |
+                                <a asp-action="Edit" asp-route-id="@item.CarId" class="btn btn-primary link-light">Edit</a> |
+                                <a asp-action="Delete" asp-route-id="@item.CarId" class="btn btn-danger link-light">Delete</a>
                              </td>
                          }
                          else

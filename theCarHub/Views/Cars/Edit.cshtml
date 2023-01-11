@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1 class="text-decoration-underline">Edit</h1>
 
-<h4>Car</h4>
+<h4>@Model.Make @Model.Model @Model.Trim @Model.Year.Year</h4>
 <hr />
 <div class="container">
     <form asp-action="Edit">
@@ -77,14 +77,14 @@
                 <span asp-validation-for="SaleDate" class="text-danger"></span>
             </div>
             <div class="form-group my-3">
-                <input type="submit" value="Save" class="btn btn-primary"/>
+                <input type="submit" value="Save" class="btn btn-success"/>
             </div>
         </div>
     </form>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary text-light">Back to List</a>
 </div>
 
 @section Scripts {

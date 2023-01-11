@@ -5,44 +5,47 @@
     ViewData["Title"] = "Cars manager";
 }
 
-<h1 class="text-decoration-underline">All the cars</h1>
+<h1 class="text-decoration-underline">Cars Manager</h1>
 <a class="fs-3 my-2" asp-action="Create">Add a new car</a>
 
 
-<table class="table text-light">
-    <thead>
+<table id="carTable" class="table text-light my-4">
+    <thead class="bg-gradient">
     <tr class="text-center">
         <th>
-            @Html.DisplayNameFor(model => model.CarId)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.CarId), "Index", new { sortOrder = ViewBag.CarIdSortParm }, new { @class= "btn btn-secondary"})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Year.Year)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Year.Year), "Index", new { sortOrder = ViewBag.YearSortParm }, new { @class= "btn btn-secondary"})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Brand)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Brand), "Index", new { sortOrder = ViewBag.BrandSortParm }, new { @class= "btn btn-secondary"})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Model)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Model), "Index", new { sortOrder = ViewBag.ModelSortParm }, new { @class= "btn btn-secondary"})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PurchasePrice)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Trim), "Index", new { sortOrder = ViewBag.TrimSortParm }, new { @class= "btn btn-secondary"})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SellingPrice)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.PurchasePrice), "Index", new { sortOrder = ViewBag.PurchasePriceSortParm }, new { @class= "btn btn-secondary"})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SaleDate)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.SellingPrice), "Index", new { sortOrder = ViewBag.SellingPriceSortParm }, new { @class= "btn btn-secondary"})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ToSale)
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.SaleDate), "Index", new { sortOrder = ViewBag.SaleDateSortParm }, new { @class= "btn btn-secondary"})
+        </th>
+        <th>
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.ToSale), "Index", new { sortOrder = ViewBag.ToSaleSortParm }, new { @class= "btn btn-secondary"})
         </th>
         <th>Actions</th>
-        <th></th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr class="text-center">
+    @foreach (var item in Model)
+    {
+        <tr class="@(item.ToSale ? "table-info" : "table-light") text-center">
             <td>
                 @Html.DisplayFor(modelItem => item.CarId)
             </td>
@@ -56,22 +59,27 @@
                 @Html.DisplayFor(modelItem => item.Model)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Trim)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.PurchasePrice)$
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SellingPrice)$
             </td>
             <td>
-                @if(item.SaleDate == DateTime.MinValue) {
+                @if (item.SaleDate == DateTime.MinValue)
+                {
                     <p>-</p>
                 }
-                else{
+                else
+                {
                     @Html.DisplayFor(modelItem => item.SaleDate)
                 }
             </td>
             <td>
-                <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "CarList", new {id= @item.CarId, toSaleValue= @item.ToSale })'" class="text-light ms-3 fs-5 py-0 px-2 btn border border-1 carListToggleBtn">
-                     @(item.ToSale ? " - " : " + ")
+                <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "CarList", new { id = @item.CarId, toSaleValue = @item.ToSale })'" class="btn @(item.ToSale ? "btn-danger" : "btn-success") w-50 text-light ms-3 fs-5 py-0 px-2 carListToggleBtn">
+                    @(item.ToSale ? " - " : " + ")
                 </button>
             </td>
             <td>
@@ -83,27 +91,3 @@
     }
     </tbody>
 </table>
-
-<!--@@section Scripts {
-    <script>
-    jQuery(document).ready(function () {
-        $('.btn').click(function (e) {
-            var btn = $(this);
-            var carId = btn.attr('id');
-            var carVal = btn.attr('data-val') === "False" ? 0 : 1;
-            $.get('/CarList/SetOnSale?id=' + carId + '&val=' + carVal,
-                function (data) {
-                    if (data === 0) {
-                        btn.attr('data-val', 'False');
-                        btn.html(' + ');
-                    }
-                    else if (data === 1) {
-                        btn.attr('data-val', 'True');
-                        btn.html(' - ');
-                    }
-                }
-            );
-        });
-    });
-    </script>
-}-->
