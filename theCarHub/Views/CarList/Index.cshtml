@@ -13,33 +13,36 @@
     <thead class="bg-gradient">
     <tr class="text-center">
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.CarId), "Index", new { sortOrder = ViewBag.CarIdSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.CarId), "Index", new { sortOrder = ViewBag.CarIdSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.Year.Year), "Index", new { sortOrder = ViewBag.YearSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Year.Year), "Index", new { sortOrder = ViewBag.YearSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.Brand), "Index", new { sortOrder = ViewBag.BrandSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Brand), "Index", new { sortOrder = ViewBag.BrandSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.Model), "Index", new { sortOrder = ViewBag.ModelSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Model), "Index", new { sortOrder = ViewBag.ModelSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.Trim), "Index", new { sortOrder = ViewBag.TrimSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Trim), "Index", new { sortOrder = ViewBag.TrimSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.PurchasePrice), "Index", new { sortOrder = ViewBag.PurchasePriceSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.PurchasePrice), "Index", new { sortOrder = ViewBag.PurchasePriceSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.SellingPrice), "Index", new { sortOrder = ViewBag.SellingPriceSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.SellingPrice), "Index", new { sortOrder = ViewBag.SellingPriceSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.SaleDate), "Index", new { sortOrder = ViewBag.SaleDateSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.SaleDate), "Index", new { sortOrder = ViewBag.SaleDateSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.ToSale), "Index", new { sortOrder = ViewBag.ToSaleSortParm }, new { @class= "btn btn-secondary"})
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.ToSale), "Index", new { sortOrder = ViewBag.ToSaleSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>Actions</th>
+        <th>
+            <img src="~/arrows.png" alt="Up and down arrows icon" title="Click on a parameter to sort the cars list" style="width:1.4rem">
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -87,6 +90,7 @@
                 <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
             </td>
+            <td></td>
         </tr>
     }
     </tbody>
