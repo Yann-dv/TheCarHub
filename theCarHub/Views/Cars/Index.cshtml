@@ -17,12 +17,12 @@
     }
 </p>
 
-<div class="carList d-flex flex-wrap flex justify-content-center">
+<div class="carList d-flex flex-wrap justify-content-center">
     @foreach (var carViewModel in Model.Item1)
     {
         <!-- Modal -->
-        <div class="modal fade" id="@($"modalViewOf{carViewModel.CarId}")" tabindex="-1" aria-labelledby="modalView" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+        <div class="modal fade" id="@($"modalViewOfCarId{carViewModel.CarId}")" tabindex="-1" aria-labelledby="modalView" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="@($"modalViewLabelOf{carViewModel.CarId}")">@Html.DisplayFor(modelItem => carViewModel.Brand) | @Html.DisplayFor(modelItem => carViewModel.Model)</h1>
@@ -31,22 +31,26 @@
                     <div class="modal-body">
                         <h5 class="py-2">Car views</h5>
                         <div class="modalViewCarGallery">
-                            <div id="carsCarousel" class="carousel slide" data-bs-ride="true">
-                                 @{ var carListFromCarImagesModel = Model.Item2.Where(img => img.name
-                                        .Contains((carViewModel.Brand + "-" + carViewModel.Model + "-" + carViewModel.Trim + "-" + carViewModel.Year.Year)
-                                            .ToLower().Replace(" ", "")));}
+                            <div id="@($"carsCarouselOf{carViewModel.CarId}")" class="carousel slide" data-bs-ride="true">
+                                
+                                @{ var carListFromCarImagesModel = Model.Item2.Where(img => img.name
+                                       .Contains((carViewModel.Brand + "-" + carViewModel.Model + "-" + carViewModel.Trim + "-" + carViewModel.Year.Year)
+                                           .ToLower().Replace(" ", "")));}
+                                
                                 <div class="carousel-indicators">
+                                    @{var index = 1;}
                                     @foreach (var carImagesNewModel in carListFromCarImagesModel)
                                     {
                                         @if (carListFromCarImagesModel.ToList().IndexOf(carImagesNewModel) == 0)
                                         {
-                                            <button type="button" data-bs-target="#carsCarousel" data-bs-slide-to="@Model.Item2.IndexOf(carImagesNewModel)" class="active" aria-current="true" aria-label="Slide @Model.Item2.IndexOf(carImagesNewModel)"></button>
+                                            <button type="button" data-bs-target="@($"#carsCarouselOf{carViewModel.CarId}")" data-bs-slide-to="@(index - 1)" class="active" aria-current="true" aria-label="Slide @index"></button>
                                         }
                                         else
                                         {
 
-                                            <button type="button" data-bs-target="#carsCarousel" data-bs-slide-to="@Model.Item2.IndexOf(carImagesNewModel)" aria-label="Slide @Model.Item2.IndexOf(carImagesNewModel)"></button>
+                                            <button type="button" data-bs-target="@($"#carsCarouselOf{carViewModel.CarId}")" data-bs-slide-to="@(index - 1)" aria-label="Slide @index"></button>
                                         }
+                                        index++;
                                     }
                                 </div>
                                 <div class="carousel-inner">
@@ -54,23 +58,23 @@
                                     {
                                         @if (carListFromCarImagesModel.ToList().IndexOf(carImagesNewModel) == 0)
                                         {
-                                            <div class="carousel-item active" data-bs-interval="5000" id="@((carViewModel.Brand + "-" + carViewModel.Model + "-" + carViewModel.Trim + "-" + carViewModel.Year.Year).ToLower().Replace(" ", ""))">
-                                                <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100">
+                                            <div class="carousel-item active" data-bs-interval="5000">
+                                                <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100" style="height:500px">
                                             </div>
                                         }
                                         else
                                         {
                                             <div class="carousel-item" data-bs-interval="5000">
-                                                <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100 h-auto">
+                                                <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100" style="height:500px">
                                             </div>
                                         }
                                     }
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carsCarousel" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="@($"#carsCarouselOf{carViewModel.CarId}")" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carsCarousel" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="@($"#carsCarouselOf{carViewModel.CarId}")" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -78,13 +82,24 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a asp-action="Index" asp-route-id="@carViewModel.CarId" class="btn btn-primary link-light">Add image</a> |
+                                <a asp-action="Index" asp-route-id="@carViewModel.CarId" class="btn btn-danger link-light">Remove current Image</a> |
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </td>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        }
                     </div>
                 </div>
             </div>
         </div>
         <!--end modal-->
-        <div class="car-body carCard d-flex flex-column justify-content-between border bg-secondary rounded p-2 m-3 w-25 h-auto">
+        <div class="car-body carCard d-lg-flex flex-column justify-content-between border bg-secondary rounded p-2 w-auto my-3 mx-3">
             <h5 class="car-title" >@Html.DisplayFor(modelItem => carViewModel.Brand) | @Html.DisplayFor(modelItem => carViewModel.Model)</h5>
             <h6>Trim : @Html.DisplayFor(modelItem => carViewModel.Trim)</h6>
             <p>Built in : @Html.DisplayFor(modelItem => carViewModel.Year.Year)</p>
@@ -92,8 +107,8 @@
                 @foreach (var image in Model.Item2.Where(img => img.name.ToString().ToLower().Replace(" ", "").Replace(".jpg", "") == ((carViewModel.Brand + "-" + carViewModel.Model + "-"+ carViewModel.Trim + "-" + carViewModel.Year.Year).ToLower().Replace(" ", ""))))
                 {
                     <!-- Button trigger modal -->
-                    <button type="button" class="bg-transparent border-0" data-bs-toggle="modal" data-bs-target="@($"#modalViewOf{carViewModel.CarId}")">
-                        <img src="@Html.DisplayFor(model => image.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="card-img" style="height:200px;">
+                    <button type="button" class="bg-transparent border-0" data-bs-toggle="modal" data-bs-target="@($"#modalViewOfCarId{carViewModel.CarId}")">
+                        <img src="@Html.DisplayFor(model => image.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="card-img" style="width:300px; height: 200px;">
                     </button>
                 }
             </div>
