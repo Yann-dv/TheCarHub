@@ -60,32 +60,19 @@ namespace theCarHub.Controllers
             List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
             using (var client = new HttpClient())
             {
-                //Passing service base url
                 client.BaseAddress = new Uri(BaseUrl);
                 client.DefaultRequestHeaders.Clear();
-                //Define request data format
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //Sending request to find web api REST service resource GetAllEmployees using HttpClient
                 HttpResponseMessage Res = await client.GetAsync("api/storage/get");
-                //Checking the response is successful or not which is sent using HttpClient
                 if (Res.IsSuccessStatusCode)
                 {
-                    //Storing the response details recieved from web api
                     var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    //Deserializing the response recieved from web api and storing into the Employee list
                     ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(EmpResponse);
                 }
             }
             return View(Tuple.Create(model,ListOfImagesUrl));
         }
-        
-        //Get : car images 
-        /*public async Task<IActionResult> GetCarImages()
-        {
-            return RedirectToAction("Indexz", "Api");
-        }*/
 
-        // GET: Cars/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Cars == null)

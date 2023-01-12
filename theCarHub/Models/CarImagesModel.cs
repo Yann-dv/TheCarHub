@@ -1,6 +1,6 @@
 namespace theCarHub.Models;
 
-public class CarImagesModel
+public class CarImagesModel 
 {
     public int ImageId { get; set; }
     public int CarId { get; set; }
