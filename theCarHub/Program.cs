@@ -71,8 +71,6 @@ else if (builder.Configuration["Authentication:Facebook:AppId"] != null && Envir
     });
 }
 
-builder.Services.AddScoped<ApiController>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

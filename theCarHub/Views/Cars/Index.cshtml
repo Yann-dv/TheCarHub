@@ -85,10 +85,22 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <td>
-                                <a asp-action="Index" asp-route-id="@carViewModel.CarId" class="btn btn-primary link-light">Add image</a> |
-                                <a asp-action="Index" asp-route-id="@carViewModel.CarId" class="btn btn-danger link-light">Remove current Image</a> |
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                               <form method="post" enctype="multipart/form-data" asp-controller="Cars" asp-action="Upload">
+                                   <div class="form-group">
+                                       <div class="col-md-10">
+                                           <p>Upload one or more files using this form:</p>
+                                           <input type="file" name="files" multiple />
+                                       </div>
+                                   </div>
+                                   <div class="form-group">
+                                       <div class="col-md-10">
+                                           <input type="submit" value="Upload" />
+                                       </div>
+                                   </div>
+                               </form>
                             </td>
+                                <a asp-action="DeleteImage" asp-route-id="@carViewModel.CarId" class="btn btn-danger link-light">Remove current Image</a>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         }
                         else
                         {

@@ -13,10 +13,10 @@
     <thead class="bg-gradient">
     <tr class="text-center">
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.CarId), "Index", new { sortOrder = ViewBag.CarIdSortParm }, new { @class = "btn btn-secondary" })
+            @Html.ActionLink("Car Id", "Index", new { sortOrder = ViewBag.CarIdSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.Year.Year), "Index", new { sortOrder = ViewBag.YearSortParm }, new { @class = "btn btn-secondary" })
+            @Html.ActionLink("Built in", "Index", new { sortOrder = ViewBag.YearSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
             @Html.ActionLink(@Html.DisplayNameFor(model => model.Brand), "Index", new { sortOrder = ViewBag.BrandSortParm }, new { @class = "btn btn-secondary" })
@@ -28,16 +28,19 @@
             @Html.ActionLink(@Html.DisplayNameFor(model => model.Trim), "Index", new { sortOrder = ViewBag.TrimSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.PurchasePrice), "Index", new { sortOrder = ViewBag.PurchasePriceSortParm }, new { @class = "btn btn-secondary" })
+            @Html.ActionLink("Purchase date", "Index", new { sortOrder = ViewBag.PurchaseDateSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.SellingPrice), "Index", new { sortOrder = ViewBag.SellingPriceSortParm }, new { @class = "btn btn-secondary" })
+            @Html.ActionLink("Purchase price", "Index", new { sortOrder = ViewBag.PurchasePriceSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.SaleDate), "Index", new { sortOrder = ViewBag.SaleDateSortParm }, new { @class = "btn btn-secondary" })
+            @Html.ActionLink("Sale price", "Index", new { sortOrder = ViewBag.SellingPriceSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.ToSale), "Index", new { sortOrder = ViewBag.ToSaleSortParm }, new { @class = "btn btn-secondary" })
+            @Html.ActionLink("Sold on", "Index", new { sortOrder = ViewBag.SaleDateSortParm }, new { @class = "btn btn-secondary" })
+        </th>
+        <th>
+            @Html.ActionLink("Sold / To sale", "Index", new { sortOrder = ViewBag.ToSaleSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th><a class="btn btn-secondary">Actions</a></th>
         <th>
@@ -63,6 +66,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Trim)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PurchasePrice)$

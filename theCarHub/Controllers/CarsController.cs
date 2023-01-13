@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
@@ -14,13 +15,13 @@ namespace theCarHub.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApiController _apiController;
+        private readonly ILogger<CarsController> _logger;
 
-        public CarsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ApiController apiController)
+        public CarsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILogger<CarsController> logger)
         {
             _context = context;
             _userManager = userManager;
-            _apiController = apiController;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -72,6 +73,95 @@ namespace theCarHub.Controllers
             }
             return View(Tuple.Create(model,ListOfImagesUrl));
         }
+        
+        [HttpPost("Upload")]
+        public async Task<IActionResult> Upload (IFormFile file, CancellationToken cancellationToken)
+        {
+            if (file == null || string.IsNullOrEmpty(file?.ContentType))
+                return BadRequest();
+            return Ok();
+        }
+
+        [HttpPost("Upload")]
+        public async Task<IActionResult> Upload()
+        {
+            string BaseUrl = "https://thecarhubapi.azurewebsites.net/";
+            List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage Res = await client.GetAsync("api/storage/get");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(EmpResponse);
+                }
+            }
+
+            return View(nameof(Index));
+        }
+        
+        
+        /*[HttpPost("UploadFilxxe")]
+        public IActionResult UploadFilexxx(IFormFile formFile)
+        {
+            _logger.LogInformation("UploadFile" + formFile.FileName);
+            return Ok(formFile.FileName);
+        }
+
+        [HttpPost("UploadFilexx")]
+        private static async Task UploadFilexx()
+        {
+            string filePath = Path.GetFullPath();
+            using var form = new MultipartFormDataContent();
+            using var fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(filePath));
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+    
+            // here it is important that second parameter matches with name given in API.
+            form.Add(fileContent, "formFile", Path.GetFileName(filePath));
+
+            var httpClient = new HttpClient()
+            {
+                BaseAddress = new Uri("https://thecarhubapi.azurewebsites.net/")
+            };
+
+            string uri = "";
+            var response = await httpClient.PostAsync($"/api/storage/post", form);
+            response.EnsureSuccessStatusCode();
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("response :" + responseContent);
+        }*/
+
+
+        /*
+
+        string path = "https://thecarhubapi.azurewebsites.net/"
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            List<string> uploadedFiles = new List<string>();
+            foreach (IFormFile postedFile in postedFiles)
+            {
+                string fileName = Path.GetFileName(postedFiles.FileName);
+                using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                {
+                    postedFiles.CopyTo(stream);
+                    uploadedFiles.Add(fileName);
+                    ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
+                }
+            }
+            return View();*/
+
+        public async Task<string> DeleteImage()
+        {
+            ApplicationUser user = await GetCurrentUserAsync();
+            return user?.Id;
+        }
+
 
         public async Task<IActionResult> Details(int? id)
         {

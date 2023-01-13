@@ -4,32 +4,38 @@
     ViewData["Title"] = "Details";
 }
 
+<!--TODO Add owner contact info in car details, maybe also in img carousel (name, email, phone), OR contact form-->
+<!--TODO CHECK datetimes in Edit-->
+<!--TODO Check if owner is not allowed to edit other owner cars-->
 <h1 class="text-decoration-underline">Details</h1>
 
 <div>
     <h4>@Model.Make @Model.Model @Model.Trim @Model.Year.Year</h4>
     <hr />
     <dl class="row">
+        @if (User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2">
+                Car Id
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+        }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Year)
+            Built in
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Year)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Make)
+            Brand
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Make)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
+            Model
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Model)
@@ -40,55 +46,69 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Trim)
         </dd>
+        @if (User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2">
+                Purchased on
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PurchaseDate)
+            </dd>
+        }
+        @if (User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2">
+                Purchase price
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PurchasePrice)$
+            </dd>
+        }
+        @if (User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2">
+                Repairs done
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Repairs)
+            </dd>
+            <dt class="col-sm-2">
+                Repair cost
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RepairCost)$
+            </dd>
+            <dt class="col-sm-2">
+                Lot date
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LotDate)
+            </dd>
+        }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchaseDate)
+            Selling price
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PurchaseDate)
+            @Html.DisplayFor(model => model.SellingPrice)$
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchasePrice)
-        </dt>
+        @if (User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2">
+                Sale date
+            </dt>
+        }
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PurchasePrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Repairs)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Repairs)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RepairCost)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RepairCost)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LotDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LotDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SellingPrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SellingPrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SaleDate)
-        </dt>
-        <dd class="col-sm-10">
-            @if(this.Model.SaleDate == DateTime.MinValue) {
+            @if (this.Model.SaleDate == DateTime.MinValue)
+            {
                 <p>Not sold</p>
             }
-            else{
+            else
+            {
                 @Html.DisplayFor(model => model.SaleDate)
             }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Description
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
@@ -100,5 +120,5 @@
     {
     <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success text-light">Edit</a>
     }
-    <a asp-action="Index" class="btn btn-primary text-light">Back to cars</a>
+    <a asp-area="" class="btn btn-primary text-light" onclick="history.go(-1);">Back</a>
 </div>
