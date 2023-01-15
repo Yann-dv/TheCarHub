@@ -88,6 +88,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-area="" class="btn btn-primary text-light" onclick="history.go(-1);">Back</a>
+        <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
     </form>
 </div>

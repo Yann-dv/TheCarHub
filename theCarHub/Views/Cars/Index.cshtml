@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using theCarHub.Controllers
 @using Humanizer
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 
 @model Tuple<List<CarViewModel>, List<CarImagesNewModel>?>
 
@@ -25,7 +26,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="@($"modalViewLabelOf{carViewModel.CarId}")">@Html.DisplayFor(modelItem => carViewModel.Brand) | @Html.DisplayFor(modelItem => carViewModel.Model)</h1>
+                        <h2 class="modal-title fs-5" id="@($"modalViewLabelOf{carViewModel.CarId}")">@Html.DisplayFor(modelItem => carViewModel.Brand) | @Html.DisplayFor(modelItem => carViewModel.Model) | @Html.DisplayFor(modelItem => carViewModel.Trim) | @Html.DisplayFor(modelItem => carViewModel.Year.Year)</h2>
                         <button type="button" class="bg-dark btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -136,7 +137,7 @@
                 <p>Price : <span class="text-decoration-underline">@Html.DisplayFor(modelItem => carViewModel.SellingPrice)$</span></p>
             }
             <div class="carCardFooter">
-                @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("Admin")) //TODO add && owner is current user
                 {
                     <p>Sold / to sale: 
                         <button id="@carViewModel.CarId" onclick="location.href='@Url.Action("SoldToggler", "Cars", new {id= carViewModel.CarId, toSaleValue= carViewModel.ToSale })'" class="btn @(carViewModel.ToSale ? "btn-danger" : "btn-success") text-light ms-3 fs-5 py-0 px-2 carListToggleBtn">
@@ -152,7 +153,28 @@
                 else
                 {
                     <td>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@($"#modalViewBuyOfCarId{carViewModel.CarId}")">Buy</button>
                         <a asp-action="Details" asp-route-id="@carViewModel.CarId" class="btn btn-primary link-light">Details</a>
+                        <!-- Modal for Buy/contact-->
+                        <div class="modal fade" id="@($"modalViewBuyOfCarId{carViewModel.CarId}")" tabindex="-1" aria-labelledby="modalView" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content bg-dark text-white">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title fs-5" id="@($"modalViewBuyLabelOf{carViewModel.CarId}")">@Html.DisplayFor(modelItem => carViewModel.Brand) | @Html.DisplayFor(modelItem => carViewModel.Model) | @Html.DisplayFor(modelItem => carViewModel.Trim) | @Html.DisplayFor(modelItem => carViewModel.Year.Year)</h2>
+                                        <button type="button" class="bg-dark btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5 class="py-2">To Buy this car, please contact us here : </h5>
+                                        <p>EMAIL : <a class="fs-5 link-primary" href="mailto:eddie@owner.com" title="Contact us by email">eddie@owner.com</a></p>
+                                        <p>PHONE : +33090999909</p>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end modal-->
                     </td>
                 }
             </div>
