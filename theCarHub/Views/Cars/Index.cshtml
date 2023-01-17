@@ -83,16 +83,16 @@
                         @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == @carViewModel.OwnerId)
                         {
                             <td>
-                               <form method="post" enctype="multipart/form-data" asp-controller="Cars" asp-action="Upload">
+                               <form method="post" enctype="multipart/form-data" asp-controller="Cars" asp-action="UploadImage">
                                    <div class="form-group">
                                        <div class="col-md-10">
-                                           <p>Upload image :</p>
-                                           <input type="file" name="files" multiple />
+                                           <p class="text-decoration-underline">Add image :</p>
+                                           <input type="file" name="file" required/>
                                        </div>
                                    </div>
                                    <div class="form-group">
                                        <div class="col-md-10">
-                                           <input type="submit" value="Upload" />
+                                           <input type="submit" value="Send" class="btn btn-primary"/>
                                        </div>
                                    </div>
                                </form>
