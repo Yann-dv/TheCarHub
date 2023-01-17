@@ -91,7 +91,7 @@ namespace theCarHub.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UploadImage(IFormFile file)
+        public async Task<IActionResult> UploadImage(IFormFile file, string imageNameIndexed)
         {
             // Uses Path.GetTempFileName to return a full path for a file, including the file name.
             var filePath = Path.GetTempFileName();
@@ -119,15 +119,14 @@ namespace theCarHub.Controllers
                 //byteArray Image
                 ByteArrayContent byteArrayContent = new ByteArrayContent(upfilebytes);
 
-                content.Add(byteArrayContent, "File", file.FileName);
+                content.Add(byteArrayContent, "File", imageNameIndexed.ToLower() + ".jpg");
 
                 //upload MultipartFormDataContent content async and store response in response var
-                var response =
-                    await client.PostAsync(url, content);
+                var response = await client.PostAsync(url, content);
 
                 //read response result as a string async into json var
                 var responseString = response.Content.ReadAsStringAsync().Result;
-
+                
                 //debug
                 Debug.WriteLine(responseString);
 
