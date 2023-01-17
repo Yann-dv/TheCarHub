@@ -15,7 +15,7 @@
             <div class="col-md-4">
                 <div class="form-group my-3">
                     <label asp-for="Year" class="control-label"></label>
-                    <input asp-for="Year" class="form-control"/>
+                    <input asp-for="Year" class="form-control" asp-format="{0:yyyy-MM-dd}"/>
                     <span asp-validation-for="Year" class="text-danger"></span>
                 </div>
                 <div class="form-group my-3">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group my-3">
                     <label asp-for="PurchaseDate" class="control-label">Date of purchase</label>
-                    <input asp-for="PurchaseDate" class="form-control"/>
+                    <input asp-for="PurchaseDate" class="form-control" asp-format="{0:yyyy-MM-dd}"/>
                     <span asp-validation-for="PurchaseDate" class="text-danger"></span>
                 </div>
                     <div class="form-group my-3">
@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-group my-3">
                     <label asp-for="LotDate" class="control-label">Lot date</label>
-                    <input asp-for="LotDate" class="form-control"/>
+                    <input asp-for="LotDate" class="form-control" asp-format="{0:yyyy-MM-dd}"/>
                     <span asp-validation-for="LotDate" class="text-danger"></span>
                 </div>
                 <div class="form-group my-3">
@@ -72,7 +72,7 @@
                 </div>
                 <div class="form-group my-3">
                     <label asp-for="SaleDate" class="control-label">Sold on</label>
-                    <input asp-for="SaleDate" class="form-control"/>
+                    <input asp-for="SaleDate" class="form-control" asp-format="{0:yyyy-MM-dd}"/>
                     <span asp-validation-for="SaleDate" class="text-danger"></span>
                 </div>
             </div>

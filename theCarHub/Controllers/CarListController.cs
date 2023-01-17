@@ -136,7 +136,7 @@ namespace theCarHub.Controllers
                     modelToSort = modelToSort.OrderByDescending(m => m.ToSale);
                     break;
                 default:
-                    modelToSort = modelToSort.OrderBy(m => m.CarId);
+                    modelToSort = modelToSort.OrderBy(m => m.SaleDate);
                     break;
                     }
             return View(modelToSort.ToList());
@@ -146,7 +146,6 @@ namespace theCarHub.Controllers
         public IActionResult Create()
         {
             return RedirectToAction("Create", "Cars");
-            ;
         }
 
         public async Task<IActionResult> Details(int? id)

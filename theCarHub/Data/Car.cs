@@ -13,7 +13,7 @@ namespace theCarHub.Data
         public string OwnerId { get; set; }
         
         [System.ComponentModel.DataAnnotations.Required]
-        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
+        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Year { get; set; }
         
         [System.ComponentModel.DataAnnotations.Required]
