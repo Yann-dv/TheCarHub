@@ -1,7 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using theCarHub.Controllers
-@using Humanizer
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
 
 @model Tuple<List<CarViewModel>, List<CarImagesNewModel>?>
 
@@ -83,13 +80,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == @carViewModel.OwnerId)
                         {
                             <td>
                                <form method="post" enctype="multipart/form-data" asp-controller="Cars" asp-action="Upload">
                                    <div class="form-group">
                                        <div class="col-md-10">
-                                           <p>Upload one or more files using this form:</p>
+                                           <p>Upload image :</p>
                                            <input type="file" name="files" multiple />
                                        </div>
                                    </div>
@@ -137,7 +134,7 @@
                 <p>Price : <span class="text-decoration-underline">@Html.DisplayFor(modelItem => carViewModel.SellingPrice)$</span></p>
             }
             <div class="carCardFooter">
-                @if (User.IsInRole("Admin")) //TODO add && owner is current user
+                @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == @carViewModel.OwnerId)
                 {
                     <p>Sold / to sale: 
                         <button id="@carViewModel.CarId" onclick="location.href='@Url.Action("SoldToggler", "Cars", new {id= carViewModel.CarId, toSaleValue= carViewModel.ToSale })'" class="btn @(carViewModel.ToSale ? "btn-danger" : "btn-success") text-light ms-3 fs-5 py-0 px-2 carListToggleBtn">

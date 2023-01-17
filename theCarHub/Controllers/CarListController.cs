@@ -33,11 +33,13 @@ namespace theCarHub.Controllers
 
         public async Task<IActionResult> Index(string sortOrder)
         {
-            var userId = await GetCurrentUserId();
-            var model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars.Select(x =>
+            var currentUserId = await GetCurrentUserId();
+            var model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars.Where(c => c.OwnerId == currentUserId)
+                .Select(x =>
                 new CarViewModel
                 {
                     CarId = x.Id,
+                    OwnerId = x.OwnerId,
                     Year = x.Year,
                     Brand = x.Make,
                     Model = x.Model,
@@ -55,7 +57,7 @@ namespace theCarHub.Controllers
             foreach (var item in model)
             {
                 var userCar = await _context.UserCars.FirstOrDefaultAsync(x =>
-                    x.UserId == userId && x.CarId == item.CarId);
+                    x.UserId == currentUserId && x.CarId == item.CarId);
                 if (userCar != null)
                 {
                     item.ToSale = true;

@@ -8,6 +8,8 @@ public class CarViewModel
 {
     public int CarId { get; set; }
     
+    public string OwnerId { get; set; }
+    
     [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
     public DateTime Year { get; set; }
     public string Brand { get; set; }

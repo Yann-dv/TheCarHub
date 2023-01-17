@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Headers;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
@@ -16,12 +15,15 @@ namespace theCarHub.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<CarsController> _logger;
+        private readonly IWebHostEnvironment _environment;
 
-        public CarsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILogger<CarsController> logger)
+        public CarsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+            ILogger<CarsController> logger, IWebHostEnvironment environment)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -37,11 +39,14 @@ namespace theCarHub.Controllers
         // GET: Cars
         public async Task<IActionResult> Index()
         {
+            ApplicationUser user = await GetCurrentUserAsync();
+            
             var model = await _context.Cars.Where(c => c.ToSale == true)
                 .Select(x =>
                     new CarViewModel
                     {
                         CarId = x.Id,
+                        OwnerId = x.OwnerId,
                         Year = x.Year,
                         Brand = x.Make,
                         Model = x.Model,
@@ -56,7 +61,7 @@ namespace theCarHub.Controllers
                         Description = x.Description,
                         ToSale = x.ToSale
                     }).ToListAsync();
-            
+
             string BaseUrl = "https://thecarhubapi.azurewebsites.net/";
             List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
             using (var client = new HttpClient())
@@ -67,99 +72,27 @@ namespace theCarHub.Controllers
                 HttpResponseMessage Res = await client.GetAsync("api/storage/get");
                 if (Res.IsSuccessStatusCode)
                 {
-                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(EmpResponse);
-                }
-            }
-            return View(Tuple.Create(model,ListOfImagesUrl));
-        }
-        
-        [HttpPost("Upload")]
-        public async Task<IActionResult> Upload (IFormFile file, CancellationToken cancellationToken)
-        {
-            if (file == null || string.IsNullOrEmpty(file?.ContentType))
-                return BadRequest();
-            return Ok();
-        }
-
-        [HttpPost("Upload")]
-        public async Task<IActionResult> Upload()
-        {
-            string BaseUrl = "https://thecarhubapi.azurewebsites.net/";
-            List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(BaseUrl);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage Res = await client.GetAsync("api/storage/get");
-                if (Res.IsSuccessStatusCode)
-                {
-                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(EmpResponse);
+                    var empResponse = Res.Content.ReadAsStringAsync().Result;
+                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(empResponse);
                 }
             }
 
-            return View(nameof(Index));
+            ViewBag.CurrentUserId = _userManager.GetUserId(HttpContext.User);
+
+            return View(Tuple.Create(model, ListOfImagesUrl));
         }
-        
-        
-        /*[HttpPost("UploadFilxxe")]
-        public IActionResult UploadFilexxx(IFormFile formFile)
-        {
-            _logger.LogInformation("UploadFile" + formFile.FileName);
-            return Ok(formFile.FileName);
-        }
-
-        [HttpPost("UploadFilexx")]
-        private static async Task UploadFilexx()
-        {
-            string filePath = Path.GetFullPath();
-            using var form = new MultipartFormDataContent();
-            using var fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(filePath));
-            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-    
-            // here it is important that second parameter matches with name given in API.
-            form.Add(fileContent, "formFile", Path.GetFileName(filePath));
-
-            var httpClient = new HttpClient()
-            {
-                BaseAddress = new Uri("https://thecarhubapi.azurewebsites.net/")
-            };
-
-            string uri = "";
-            var response = await httpClient.PostAsync($"/api/storage/post", form);
-            response.EnsureSuccessStatusCode();
-            var responseContent = await response.Content.ReadAsStringAsync();
-            Console.WriteLine("response :" + responseContent);
-        }*/
-
-
-        /*
-
-        string path = "https://thecarhubapi.azurewebsites.net/"
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            List<string> uploadedFiles = new List<string>();
-            foreach (IFormFile postedFile in postedFiles)
-            {
-                string fileName = Path.GetFileName(postedFiles.FileName);
-                using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
-                {
-                    postedFiles.CopyTo(stream);
-                    uploadedFiles.Add(fileName);
-                    ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
-                }
-            }
-            return View();*/
 
         public async Task<string> DeleteImage()
         {
             ApplicationUser user = await GetCurrentUserAsync();
             return user?.Id;
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -176,6 +109,8 @@ namespace theCarHub.Controllers
             {
                 return NotFound();
             }
+            
+            ViewBag.CurrentUserId = _userManager.GetUserId(HttpContext.User);
 
             return View(car);
         }
@@ -186,22 +121,30 @@ namespace theCarHub.Controllers
         {
             return View();
         }
-
+        
         // POST: Cars/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind(
-                "Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
-            Car car)
+        [Bind("Id, OwnerId, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")] 
+        Car car)
         {
+            //car.OwnerId = user.Id;
+            
             if (ModelState.IsValid)
             {
+                var user = await GetCurrentUserAsync();
+                car.OwnerId = user.Id;
                 _context.Add(car);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("", "Unable to create the car : the model seems invalid. Try again, and if the problem persists, see your system administrator.");
             }
 
             return View(car);
@@ -236,7 +179,7 @@ namespace theCarHub.Controllers
                 "Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
             Car car)
         {
-            if (id != car.Id)
+            if (id != car.Id || car.OwnerId != _userManager.GetUserId(HttpContext.User))
             {
                 return NotFound();
             }
@@ -277,7 +220,7 @@ namespace theCarHub.Controllers
 
             var car = await _context.Cars
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null)
+            if (car == null ||  car.OwnerId != _userManager.GetUserId(HttpContext.User))
             {
                 return NotFound();
             }

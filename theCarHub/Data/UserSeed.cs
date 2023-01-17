@@ -46,6 +46,7 @@ public class UserSeed
                     },
                     new()
                     {
+                        Id = "4151a77b-11f2-41e5-90bc-c07a6ed3e57c",
                         FirstName = "Eddie",
                         LastName = "The Owner",
                         UserName = "Eddie",
