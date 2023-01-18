@@ -223,16 +223,16 @@ namespace theCarHub.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
             [Bind(
-                "Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
+                "Id, OwnerId, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
             Car car)
         {
-            if (id != car.Id || car.OwnerId != _userManager.GetUserId(HttpContext.User))
+            if (id != car.Id || car.OwnerId != ViewBag.CurrentUserId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
-            {
+            { //TODO fix isValide false when edit
                 try
                 {
                     _context.Update(car);

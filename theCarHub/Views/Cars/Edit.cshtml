@@ -15,7 +15,7 @@
             <div class="col-md-4">
                 <div class="form-group my-3">
                     <label asp-for="Year" class="control-label"></label>
-                    <input asp-for="Year" class="form-control" asp-format="{0:yyyy-MM-dd}"/>
+                    <input asp-for="Year" type="date" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
                     <span asp-validation-for="Year" class="text-danger"></span>
                 </div>
                 <div class="form-group my-3">
@@ -35,14 +35,14 @@
                 </div>
                 <div class="form-group my-3">
                     <label asp-for="PurchaseDate" class="control-label">Date of purchase</label>
-                    <input asp-for="PurchaseDate" class="form-control" asp-format="{0:yyyy-MM-dd}"/>
+                    <input asp-for="PurchaseDate" type="date" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
                     <span asp-validation-for="PurchaseDate" class="text-danger"></span>
                 </div>
-                    <div class="form-group my-3">
-                        <label asp-for="PurchasePrice" class="control-label">Price of purchase</label>
-                        <input asp-for="PurchasePrice" class="form-control"/>
-                        <span asp-validation-for="PurchasePrice" class="text-danger"></span>
-                    </div>
+                <div class="form-group my-3">
+                    <label asp-for="PurchasePrice" class="control-label">Price of purchase</label>
+                    <input asp-for="PurchasePrice" class="form-control"/>
+                    <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group my-3">
@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-group my-3">
                     <label asp-for="LotDate" class="control-label">Lot date</label>
-                    <input asp-for="LotDate" class="form-control" asp-format="{0:yyyy-MM-dd}"/>
+                    <input asp-for="LotDate" type="date" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
                     <span asp-validation-for="LotDate" class="text-danger"></span>
                 </div>
                 <div class="form-group my-3">
@@ -70,12 +70,16 @@
                     <textarea asp-for="Description" class="form-control"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
-                <div class="form-group my-3">
+                <div class="form-check form-switch">
+                  <label class="form-check-label fw-bold" for="IsSold">Sold</label>
+                  <input class="form-check-input" type="checkbox" role="switch" id="IsSold" onclick="isCheckedToggle()">
+                </div>
+                <div id="validateSoldDate" class="form-group my-3" hidden>
                     <label asp-for="SaleDate" class="control-label">Sold on</label>
-                    <input asp-for="SaleDate" class="form-control" asp-format="{0:yyyy-MM-dd}"/>
+                    <input asp-for="LotDate" type="date" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(DateTime.MinValue.ToString("yyyy-MM-dd"))" />
                     <span asp-validation-for="SaleDate" class="text-danger"></span>
                 </div>
-            </div>
+                </div>
                 <div class="form-group my-3">
                     <input type="submit" value="Save" class="btn btn-success"/>
                     <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
@@ -87,4 +91,16 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+     async function isCheckedToggle() {
+        const IsSoldCheckBox = await document.querySelector("#IsSold");
+        const soldDiv = await document.querySelector("#validateSoldDate");
+        
+    if (IsSoldCheckBox.value = true )
+        {
+            soldDiv.toggleAttribute("hidden");
+        }
+    }
+    </script>
 }

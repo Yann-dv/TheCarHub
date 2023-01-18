@@ -15,7 +15,7 @@
             <div class="col-md-4">
                 <div class="form-group my-3">
                     <label asp-for="Year" class="control-label"></label>
-                    <input asp-for="Year" class="form-control" />
+                    <input asp-for="Year" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
                     <span asp-validation-for="Year" class="text-danger"></span>
                 </div>
             <div class="form-group my-3" hidden>
@@ -39,7 +39,7 @@
             </div>
             <div class="form-group my-3">
                 <label asp-for="PurchaseDate" class="control-label">Date of purchase</label>
-                <input asp-for="PurchaseDate" class="form-control"/>
+                <input asp-for="PurchaseDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
                 <span asp-validation-for="PurchaseDate" class="text-danger"></span>
             </div>
                 <div class="form-group my-3">
@@ -61,7 +61,7 @@
             </div>
             <div class="form-group my-3">
                 <label asp-for="LotDate" class="control-label">Lot date</label>
-                <input asp-for="LotDate" class="form-control"/>
+                <input asp-for="LotDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
                 <span asp-validation-for="LotDate" class="text-danger"></span>
             </div>
             <div class="form-group my-3">
@@ -83,7 +83,7 @@
 </div>
 
 <div class="my-4">
-    <a asp-area="" class="btn btn-primary text-light" onclick="history.go(-1);">Back</a>
+    <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
 </div>
 
 @section Scripts {

@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
+using theCarHub.Data;
 
 namespace theCarHub.Data
 {
@@ -12,43 +12,43 @@ namespace theCarHub.Data
         
         public string OwnerId { get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Year { get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public string Make { get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public string Model { get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public string Trim { get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
-        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Required]
+        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime PurchaseDate { get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public float PurchasePrice{ get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public string Repairs{ get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public float RepairCost{ get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
-        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Required]
+        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LotDate{ get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public float SellingPrice { get; set; }
         
-        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
+        [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SaleDate{ get; set; }
         
-        [System.ComponentModel.DataAnnotations.Required]
+        [Required]
         public string Description{ get; set; }
         
         public bool ToSale { get; set; }
