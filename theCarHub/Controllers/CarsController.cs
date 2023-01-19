@@ -15,16 +15,11 @@ namespace theCarHub.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<CarsController> _logger;
-        private readonly IWebHostEnvironment _environment;
 
-        public CarsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
-            ILogger<CarsController> logger, IWebHostEnvironment environment)
+        public CarsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _logger = logger;
-            _environment = environment;
         }
 
         [HttpGet]
@@ -63,11 +58,11 @@ namespace theCarHub.Controllers
                         ToSale = x.ToSale
                     }).ToListAsync();
 
-            string BaseUrl = "https://thecarhubapi.azurewebsites.net/";
+            string baseUrl = "https://thecarhubapi.azurewebsites.net/";
             List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(BaseUrl);
+                client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage Res = await client.GetAsync("api/storage/get");
@@ -226,7 +221,8 @@ namespace theCarHub.Controllers
                 "Id, OwnerId, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
             Car car)
         {
-            if (id != car.Id || car.OwnerId != ViewBag.CurrentUserId)
+            ViewBag.CurrentUserId = _userManager.GetUserId(HttpContext.User);
+            if (id != car.Id || car.OwnerId.ToString() != ViewBag.CurrentUserId.ToString())
             {
                 return NotFound();
             }
