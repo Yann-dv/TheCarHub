@@ -1,0 +1,19 @@
+@model theCarHub.Models.CarImagesNewModel
+
+@{
+    ViewData["Title"] = "Delete Car Image";
+}
+
+<h1 class="text-decoration-underline">Delete Car Image</h1>
+
+<h3 class="text-danger">Are you sure you want to delete this image ?</h3>
+<div>
+    <h4>@Model.name</h4>
+    
+    <img src="@Model.uri">
+    
+    <form asp-action="DeleteImageConfirmation">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
+    </form>
+</div>

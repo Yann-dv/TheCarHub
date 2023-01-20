@@ -150,19 +150,19 @@ namespace theCarHub.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            return RedirectToAction("Details", "Cars", new { id });
+            return RedirectToAction("Details", "Cars", new { id = id });
         }
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            return RedirectToAction("Edit", "Cars", new { id });
+            return RedirectToAction("Edit", "Cars", new { id = id });
         }
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            return RedirectToAction("Delete", "Cars", new { id });
+            return RedirectToAction("Delete", "Cars", new { id = id });
         }
 
         [Authorize(Roles = "Admin")]

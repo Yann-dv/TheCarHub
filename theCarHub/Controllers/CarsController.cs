@@ -77,13 +77,38 @@ namespace theCarHub.Controllers
 
             return View(Tuple.Create(model, ListOfImagesUrl));
         }
-
-        public async Task<string> DeleteImage()
+        
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteImage(string nameOfImgToDelete)
         {
-            ApplicationUser user = await GetCurrentUserAsync();
-            return user?.Id;
+            if (nameOfImgToDelete == null || _context.Cars == null)
+            {
+                return NotFound();
+            }
+
+            string baseUrl = "https://thecarhubapi.azurewebsites.net/";
+            var getImgToDelete = new CarImagesNewModel();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage Res = await client.GetAsync("api/storage/" + nameOfImgToDelete);
+                if (Res.IsSuccessStatusCode)
+                {
+                    var empResponse = Res.Content.ReadAsStringAsync().Result;
+                    getImgToDelete = JsonConvert.DeserializeObject<CarImagesNewModel>(empResponse);
+                }
+            }
+
+            return View(getImgToDelete);
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteImageConfirmation()
+        {
+            return RedirectToAction(nameof(Index));
+        }
 
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile file, string imageNameIndexed)
@@ -228,7 +253,7 @@ namespace theCarHub.Controllers
             }
 
             if (ModelState.IsValid)
-            { //TODO fix isValide false when edit
+            {
                 try
                 {
                     _context.Update(car);
