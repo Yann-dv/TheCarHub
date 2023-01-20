@@ -93,7 +93,7 @@ app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{nameOfImgToDelete?}");
+    pattern: "{controller=Home}/{action=Index}/{pathOfImgToDelete?}");
 
 app.MapRazorPages();
 

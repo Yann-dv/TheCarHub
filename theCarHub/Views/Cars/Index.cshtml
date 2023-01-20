@@ -59,14 +59,14 @@
                                         {
                                             <div class="carousel-item active" data-bs-interval="5000">
                                                 <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100" style="height:500px">
-                                                <a asp-action="DeleteImage" asp-route-nameOfImgToDelete="@carImagesNewModel.name" title="Delete current image" class="z-3 btn btn-danger link-light p-2 position-absolute top-0 end-0"><img src="~/trash.svg" alt="Delete current image" style="width: 25px"/></a>
+                                                <a asp-action="DeleteImage" asp-route-pathOfImgToDelete="@carImagesNewModel.uri" title="Delete current image" class="z-3 btn btn-danger link-light p-2 position-absolute top-0 end-0"><img src="~/trash.svg" alt="Delete current image" style="width: 25px"/></a>
                                             </div>
                                         }
                                         else
                                         {
                                             <div class="carousel-item" data-bs-interval="5000">
                                                 <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100" style="height:500px">
-                                                <a asp-action="DeleteImage" asp-route-nameOfImgToDelete="@carImagesNewModel.name" title="Delete current image" class="btn btn-danger link-light p-2"><img src="~/trash.svg" alt="Delete current image" style="width: 25px"/></a>
+                                                <a asp-action="DeleteImage" asp-route-pathOfImgToDelete="@carImagesNewModel.uri" title="Delete current image" class="btn btn-danger link-light p-2"><img src="~/trash.svg" alt="Delete current image" style="width: 25px"/></a>
                                             </div>
                                         }
                                     }

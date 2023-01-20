@@ -79,29 +79,20 @@ namespace theCarHub.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteImage(string nameOfImgToDelete)
+        public async Task<IActionResult> DeleteImage(CarImagesNewModel imageModel)
         {
-            if (nameOfImgToDelete == null || _context.Cars == null)
+            if (imageModel == null || _context.Cars == null)
             {
                 return NotFound();
             }
 
-            string baseUrl = "https://thecarhubapi.azurewebsites.net/";
-            var getImgToDelete = new CarImagesNewModel();
-            using (var client = new HttpClient())
+            var modelToDelete = new CarImagesNewModel
             {
-                client.BaseAddress = new Uri(baseUrl);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage Res = await client.GetAsync("api/storage/" + nameOfImgToDelete);
-                if (Res.IsSuccessStatusCode)
-                {
-                    var empResponse = Res.Content.ReadAsStringAsync().Result;
-                    getImgToDelete = JsonConvert.DeserializeObject<CarImagesNewModel>(empResponse);
-                }
-            }
-
-            return View(getImgToDelete);
+                name = imageModel.name,
+                uri = imageModel.uri
+            };
+            
+            return View(modelToDelete);
         }
 
         [Authorize(Roles = "Admin")]
@@ -139,7 +130,7 @@ namespace theCarHub.Controllers
                 //byteArray Image
                 ByteArrayContent byteArrayContent = new ByteArrayContent(upfilebytes);
 
-                content.Add(byteArrayContent, "File", imageNameIndexed.ToLower() + ".jpg");
+                content.Add(byteArrayContent, "File", imageNameIndexed.ToLower().Replace(" ", "") + ".jpg");
 
                 //upload MultipartFormDataContent content async and store response in response var
                 var response = await client.PostAsync(url, content);

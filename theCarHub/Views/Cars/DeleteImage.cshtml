@@ -1,4 +1,4 @@
-@model theCarHub.Models.CarImagesNewModel
+@model CarImagesNewModel
 
 @{
     ViewData["Title"] = "Delete Car Image";
@@ -10,7 +10,7 @@
 <div>
     <h4>@Model.name</h4>
     
-    <img src="@Model.uri">
+    <img src="@Model.uri" alt="Bad img">
     
     <form asp-action="DeleteImageConfirmation">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
