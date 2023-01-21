@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.IdentityModel.Tokens
+@using theCarHub.Controllers
 
 @model Tuple<List<CarViewModel>, List<CarImagesNewModel>?>
 
@@ -59,14 +60,16 @@
                                         {
                                             <div class="carousel-item active" data-bs-interval="5000">
                                                 <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100" style="height:500px">
-                                                <a asp-action="DeleteImage" asp-route-pathOfImgToDelete="@carImagesNewModel.uri" title="Delete current image" class="z-3 btn btn-danger link-light p-2 position-absolute top-0 end-0"><img src="~/trash.svg" alt="Delete current image" style="width: 25px"/></a>
+                                                <a href="@Url.Action("DeleteImage", "Cars", new { carImagesNewModel.content, carImagesNewModel.contentType, carImagesNewModel.name, carImagesNewModel.uri})" title="Delete current image" class="z-3 btn btn-danger link-light p-2 position-absolute top-0 end-0">
+                                                    <img src="~/trash.svg" alt="Delete current image" style="width: 25px"/>
+                                                </a>
                                             </div>
                                         }
                                         else
                                         {
                                             <div class="carousel-item" data-bs-interval="5000">
                                                 <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100" style="height:500px">
-                                                <a asp-action="DeleteImage" asp-route-pathOfImgToDelete="@carImagesNewModel.uri" title="Delete current image" class="btn btn-danger link-light p-2"><img src="~/trash.svg" alt="Delete current image" style="width: 25px"/></a>
+                                                <a asp-action="DeleteImage" asp-route-pathOfImgToDelete="@carImagesNewModel.uri" title="Delete current image" class="btn btn-danger link-light p-2 position-absolute top-0 end-0"><img src="~/trash.svg" alt="Delete current image" style="width: 25px"/></a>
                                             </div>
                                         }
                                     }
@@ -83,7 +86,7 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-around">
-                        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == @carViewModel.OwnerId)
+                        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == carViewModel.OwnerId)
                         {
                             <td>
                                <form method="post" enctype="multipart/form-data" asp-controller="Cars" asp-action="UploadImage" >
@@ -101,7 +104,7 @@
                                                
                                                if (imgIndex is 0 or < 10)
                                                {
-                                                   iValue = "0" + (imgIndex + 1).ToString();
+                                                   iValue = "0" + (imgIndex + 1);
                                                }
                                                else
                                                {
@@ -129,12 +132,12 @@
             </div>
         </div>
         <!--end modal-->
-        <div class="car-body carCard d-lg-flex flex-column justify-content-between border bg-secondary rounded p-2 w-auto my-3 mx-3">
+        <div class="car-body carCard d-lg-flex flex-column justify-content-between border bg-secondary rounded p-2 w-auto my-3 mx-3" style="::hover{transform: scale(1.1)}">
             <h5 class="car-title" >@Html.DisplayFor(modelItem => carViewModel.Brand) | @Html.DisplayFor(modelItem => carViewModel.Model)</h5>
             <h6>Trim : @Html.DisplayFor(modelItem => carViewModel.Trim)</h6>
             <p>Built in : @Html.DisplayFor(modelItem => carViewModel.Year.Year)</p>
             <div class="cardMainImage">
-                @{var currentCarImgName = (carViewModel.Brand + "-" + carViewModel.Model + "-" + carViewModel.Trim + "-" + carViewModel.Year.Year + "-01.jpg").ToString().ToLower().Replace(" ", "");
+                @{var currentCarImgName = (carViewModel.Brand + "-" + carViewModel.Model + "-" + carViewModel.Trim + "-" + carViewModel.Year.Year + "-01.jpg").ToLower().Replace(" ", "");
                 }
                 @if(!Model.Item2.Any(img => img.name.Contains(currentCarImgName)))
                 {
@@ -169,7 +172,7 @@
                 <p>Price : <span class="text-decoration-underline">@Html.DisplayFor(modelItem => carViewModel.SellingPrice)$</span></p>
             }
             <div class="carCardFooter">
-                @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == @carViewModel.OwnerId)
+                @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == carViewModel.OwnerId)
                 {
                     <p>Sold / to sale: 
                         <button id="@carViewModel.CarId" onclick="location.href='@Url.Action("SoldToggler", "Cars", new {id= carViewModel.CarId, toSaleValue= carViewModel.ToSale })'" class="btn @(carViewModel.ToSale ? "btn-danger" : "btn-success") text-light ms-3 fs-5 py-0 px-2 carListToggleBtn">

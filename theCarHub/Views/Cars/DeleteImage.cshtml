@@ -10,9 +10,9 @@
 <div>
     <h4>@Model.name</h4>
     
-    <img src="@Model.uri" alt="Bad img">
+    <img src="@Model.uri" alt="Bad img" class="w-50">
     
-    <form asp-action="DeleteImageConfirmation">
+    <form asp-action="DeleteImageConfirmation" class="my-3">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
     </form>

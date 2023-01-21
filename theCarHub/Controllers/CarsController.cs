@@ -79,25 +79,43 @@ namespace theCarHub.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteImage(CarImagesNewModel imageModel)
+        public async Task<IActionResult> DeleteImage(CarImagesNewModel imgObject)
         {
-            if (imageModel == null || _context.Cars == null)
+            if (imgObject == null || _context.Cars == null)
             {
                 return NotFound();
             }
 
             var modelToDelete = new CarImagesNewModel
             {
-                name = imageModel.name,
-                uri = imageModel.uri
+                content = imgObject.content,
+                name = imgObject.name,
+                uri = imgObject.uri,
+                contentType = imgObject.contentType
             };
             
             return View(modelToDelete);
         }
 
+        [HttpDelete]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteImageConfirmation()
+        public async Task<IActionResult> DeleteImageConfirmation(string fileName)
         {
+            string baseUrl = "https://thecarhubapi.azurewebsites.net/";
+            List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+                HttpResponseMessage Res = await client.GetAsync("api/storage/" + fileName);
+                if (Res.IsSuccessStatusCode)
+                {
+                    var empResponse = Res.Content.ReadAsStringAsync().Result;
+                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(empResponse);
+                }
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
