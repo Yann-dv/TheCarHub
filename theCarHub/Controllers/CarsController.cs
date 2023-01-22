@@ -98,6 +98,7 @@ namespace theCarHub.Controllers
         }
 
         [HttpDelete]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteImageConfirmation(string fileName)
         {
@@ -108,13 +109,16 @@ namespace theCarHub.Controllers
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
-                HttpResponseMessage Res = await client.GetAsync("api/storage/" + fileName);
+                HttpResponseMessage Res = await client.DeleteAsync("api/Storage/" + fileName);
                 if (Res.IsSuccessStatusCode)
                 {
                     var empResponse = Res.Content.ReadAsStringAsync().Result;
                     ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(empResponse);
                 }
             }
+            //var httpClient = new HttpClient();
+            //var request = new HttpRequestMessage(HttpMethod.Delete, "https://localhost:7210/123");
+            //var response = httpClient.Send(request);
 
             return RedirectToAction(nameof(Index));
         }

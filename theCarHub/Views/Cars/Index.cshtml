@@ -94,24 +94,16 @@
                                        <div class="col-md-10">
                                            <p class="text-decoration-underline">Add new image :</p>
                                            <input type="file" name="file" required/>
-                                           @{ int imgIndex = 0;
-                                               string iValue = imgIndex.ToString();
+                                           @{ int imgIndex = 1;
                                            }
                                            
                                            @foreach (var carImagesNewModel in carListFromCarImagesModel)
                                            {
                                                imgIndex++;
-                                               
-                                               if (imgIndex is 0 or < 10)
-                                               {
-                                                   iValue = "0" + (imgIndex + 1);
-                                               }
-                                               else
-                                               {
-                                                   iValue = imgIndex.ToString();
-                                               }
                                            }
-                                           <input id="imageNameIndexed" name="imageNameIndexed" value="@carViewModel.Brand-@carViewModel.Model-@carViewModel.Trim-@carViewModel.Year.Year-@(iValue)" hidden/>
+                                           
+                                           
+                                           <input id="imageNameIndexed" name="imageNameIndexed" value="@carViewModel.Brand-@carViewModel.Model-@carViewModel.Trim-@carViewModel.Year.Year-@(imgIndex)" hidden/>
                                        </div>
                                    </div>
                                    <div class="form-group">
@@ -137,7 +129,7 @@
             <h6>Trim : @Html.DisplayFor(modelItem => carViewModel.Trim)</h6>
             <p>Built in : @Html.DisplayFor(modelItem => carViewModel.Year.Year)</p>
             <div class="cardMainImage">
-                @{var currentCarImgName = (carViewModel.Brand + "-" + carViewModel.Model + "-" + carViewModel.Trim + "-" + carViewModel.Year.Year + "-01.jpg").ToLower().Replace(" ", "");
+                @{var currentCarImgName = (carViewModel.Brand + "-" + carViewModel.Model + "-" + carViewModel.Trim + "-" + carViewModel.Year.Year).ToLower().Replace(" ", "");
                 }
                 @if(!Model.Item2.Any(img => img.name.Contains(currentCarImgName)))
                 {
@@ -150,7 +142,7 @@
                     @foreach (var image in Model.Item2)
                     {
 
-                        if (image.name.ToLower().Replace(" ", "") == currentCarImgName)
+                            if (image.name.ToLower().Replace(" ", "") == currentCarImgName + "-1.jpg")
                         {
                             <!-- Button trigger modal -->
                             <button type="button" class="bg-transparent border-0" data-bs-toggle="modal" data-bs-target="@($"#modalViewOfCarId{carViewModel.CarId}")">
