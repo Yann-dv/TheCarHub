@@ -35,6 +35,7 @@ namespace theCarHub.Controllers
         // GET: Cars
         public async Task<IActionResult> Index()
         {
+
             ApplicationUser user = await GetCurrentUserAsync();
 
             var model = await _context.Cars.Where(c => c.ToSale == true)
@@ -347,7 +348,6 @@ namespace theCarHub.Controllers
 
                 await _context.SaveChangesAsync();
             }
-
             return RedirectToAction(nameof(Index));
         }
     }
