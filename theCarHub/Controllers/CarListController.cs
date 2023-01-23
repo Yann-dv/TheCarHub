@@ -72,6 +72,7 @@ namespace theCarHub.Controllers
             ViewBag.TrimSortParm = sortOrder == "Trim" ? "Trim_desc" : "Trim";
             ViewBag.PurchaseDateSortParm = sortOrder == "PurchaseDate" ? "PurchaseDate_desc" : "PurchaseDate";
             ViewBag.PurchasePriceSortParm = sortOrder == "PurchasePrice" ? "PurchasePrice_desc" : "PurchasePrice";
+            ViewBag.RepairCostSortParm = sortOrder == "RepairCost" ? "RepairCost_desc" : "RepairCost";
             ViewBag.SellingPriceSortParm = sortOrder == "SellingPrice" ? "SellingPrice_desc" : "SellingPrice";
             ViewBag.SaleDateSortParm = sortOrder == "SaleDate" ? "SaleDate_desc" : "SaleDate";
             ViewBag.ToSaleSortParm = sortOrder == "ToSale" ? "ToSale_desc" : "ToSale";
@@ -117,6 +118,12 @@ namespace theCarHub.Controllers
                     break;
                 case "PurchasePrice_desc":
                     modelToSort = modelToSort.OrderByDescending(m => m.PurchasePrice);
+                    break;
+                case "RepairCost":
+                    modelToSort = modelToSort.OrderBy(m => m.RepairCost);
+                    break;
+                case "RepairCost_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.RepairCost);
                     break;
                 case "SellingPrice":
                     modelToSort = modelToSort.OrderBy(m => m.SellingPrice);
