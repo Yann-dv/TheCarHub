@@ -97,7 +97,7 @@ namespace theCarHub.Controllers
             return View(modelToDelete);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [AcceptVerbs("DELETE")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
