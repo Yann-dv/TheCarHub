@@ -110,6 +110,7 @@ namespace theCarHub.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+            
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -139,8 +140,8 @@ namespace theCarHub.Areas.Identity.Pages.Account.Manage
             {
                 user.LastName = Input.LastName;
                 await _userManager.UpdateAsync(user);
-            }
-
+            } 
+            
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
@@ -148,7 +149,7 @@ namespace theCarHub.Areas.Identity.Pages.Account.Manage
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            if (Input.PhoneNumber != phoneNumber || phoneNumber == null)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)

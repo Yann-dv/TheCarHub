@@ -32,13 +32,15 @@ namespace theCarHub.Controllers
             return user?.Id;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var userId = await GetCurrentUserId();
-            var model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars.Select(x =>
+            var currentUserId = await GetCurrentUserId();
+            var model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars.Where(c => c.OwnerId == currentUserId)
+                .Select(x =>
                 new CarViewModel
                 {
                     CarId = x.Id,
+                    OwnerId = x.OwnerId,
                     Year = x.Year,
                     Brand = x.Make,
                     Model = x.Model,
@@ -56,38 +58,112 @@ namespace theCarHub.Controllers
             foreach (var item in model)
             {
                 var userCar = await _context.UserCars.FirstOrDefaultAsync(x =>
-                    x.UserId == userId && x.CarId == item.CarId);
+                    x.UserId == currentUserId && x.CarId == item.CarId);
                 if (userCar != null)
                 {
                     item.ToSale = true;
                 }
             }
-
-            return View(model);
+            
+            ViewBag.CarIdSortParm = String.IsNullOrEmpty(sortOrder) ? "CarId_desc" : "";
+            ViewBag.YearSortParm = sortOrder == "Year" ? "Year_desc" : "Year";
+            ViewBag.BrandSortParm = sortOrder == "Brand" ? "Brand_desc" : "Brand";
+            ViewBag.ModelSortParm = sortOrder == "Model" ? "Model_desc" : "Model";
+            ViewBag.TrimSortParm = sortOrder == "Trim" ? "Trim_desc" : "Trim";
+            ViewBag.PurchaseDateSortParm = sortOrder == "PurchaseDate" ? "PurchaseDate_desc" : "PurchaseDate";
+            ViewBag.PurchasePriceSortParm = sortOrder == "PurchasePrice" ? "PurchasePrice_desc" : "PurchasePrice";
+            ViewBag.SellingPriceSortParm = sortOrder == "SellingPrice" ? "SellingPrice_desc" : "SellingPrice";
+            ViewBag.SaleDateSortParm = sortOrder == "SaleDate" ? "SaleDate_desc" : "SaleDate";
+            ViewBag.ToSaleSortParm = sortOrder == "ToSale" ? "ToSale_desc" : "ToSale";
+            
+            var modelToSort = from m in model select m;
+            switch (sortOrder)
+            {
+                case "CarId_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.CarId);
+                    break;
+                case "Year":
+                    modelToSort = modelToSort.OrderBy(m => m.Year.Year);
+                    break;
+                case "Year_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.Year.Year);
+                    break;
+                case "Brand":
+                    modelToSort = modelToSort.OrderBy(m => m.Brand);
+                    break;
+                case "Brand_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.Brand);
+                    break;
+                case "Model":
+                    modelToSort = modelToSort.OrderBy(m => m.Model);
+                    break;
+                case "Model_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.Model);
+                    break;
+                case "Trim":
+                    modelToSort = modelToSort.OrderBy(m => m.Trim);
+                    break;
+                case "Trim_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.Trim);
+                    break;
+                case "PurchaseDate":
+                    modelToSort = modelToSort.OrderBy(m => m.PurchaseDate);
+                    break;
+                case "PurchaseDate_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.PurchaseDate);
+                    break;
+                case "PurchasePrice":
+                    modelToSort = modelToSort.OrderBy(m => m.PurchasePrice);
+                    break;
+                case "PurchasePrice_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.PurchasePrice);
+                    break;
+                case "SellingPrice":
+                    modelToSort = modelToSort.OrderBy(m => m.SellingPrice);
+                    break;
+                case "SellingPrice_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.SellingPrice);
+                    break;
+                case "SaleDate":
+                    modelToSort = modelToSort.OrderBy(m => m.SaleDate);
+                    break;
+                case "SaleDate_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.SaleDate);
+                    break;
+                case "ToSale":
+                    modelToSort = modelToSort.OrderBy(m => m.ToSale);
+                    break;
+                case "ToSale_desc":
+                    modelToSort = modelToSort.OrderByDescending(m => m.ToSale);
+                    break;
+                default:
+                    modelToSort = modelToSort.OrderBy(m => m.SaleDate);
+                    break;
+                    }
+            return View(modelToSort.ToList());
         }
         
-        public async Task<IActionResult> Details(int? id)
-        {
-            return RedirectToAction("Details", "Cars", new { id });
-        }
-
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return RedirectToAction("Create", "Cars");
-            ;
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            return RedirectToAction("Details", "Cars", new { id = id });
         }
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            return RedirectToAction("Edit", "Cars", new { id });
+            return RedirectToAction("Edit", "Cars", new { id = id });
         }
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            return RedirectToAction("Delete", "Cars", new { id });
+            return RedirectToAction("Delete", "Cars", new { id = id });
         }
 
         [Authorize(Roles = "Admin")]

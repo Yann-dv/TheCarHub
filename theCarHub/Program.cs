@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using theCarHub.Controllers;
 using theCarHub.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -79,7 +80,16 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.Use(async (context, next) =>
+    {
+        await next();
+        if (context.Response.StatusCode == 404)
+        {
+            context.Request.Path = "/Home";
+            await next();
+        }
+    });
+    app.UseExceptionHandler("/Shared/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -89,16 +99,17 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{pathOfImgToDelete?}");
 
 app.MapRazorPages();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-//Cars tables seed
+//Cars and users tables seed
 await CarSeed.SeedCarsAsync(app);
 await UserSeed.SeedUsersAsync(app);
 await UserSeed.SeedSuperAdminAsync(app);

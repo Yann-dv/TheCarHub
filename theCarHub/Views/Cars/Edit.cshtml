@@ -4,89 +4,111 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1 class="text-decoration-underline">Edit</h1>
 
-<h4>Car</h4>
+<h4>@Model.Make @Model.Model @Model.Trim @Model.Year.Year</h4>
 <hr />
 <div class="container">
     <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
             <div class="col-md-4">
-            <div class="form-group my-3">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control"/>
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-            <div class="form-group my-3">
-                <label asp-for="Make" class="control-label">Brand</label>
-                <input asp-for="Make" class="form-control"/>
-                <span asp-validation-for="Make" class="text-danger"></span>
-            </div>
-            <div class="form-group my-3">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control"/>
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group my-3">
-                <label asp-for="Trim" class="control-label"></label>
-                <input asp-for="Trim" class="form-control"/>
-                <span asp-validation-for="Trim" class="text-danger"></span>
-            </div>
-            <div class="form-group my-3">
-                <label asp-for="PurchaseDate" class="control-label">Date of purchase</label>
-                <input asp-for="PurchaseDate" class="form-control"/>
-                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
-            </div>
+                <div class="form-group my-3">
+                    <label asp-for="Year" class="control-label"></label>
+                    <input asp-for="Year" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+                <div class="form-group my-3" hidden>
+                    <label asp-for="OwnerId" class="control-label"></label>
+                    <input asp-for="OwnerId" class="form-control" value="@Model.OwnerId"/>
+                </div>
+                <div class="form-group my-3">
+                    <label asp-for="Make" class="control-label">Brand</label>
+                    <input asp-for="Make" class="form-control"/>
+                    <span asp-validation-for="Make" class="text-danger"></span>
+                </div>
+                <div class="form-group my-3">
+                    <label asp-for="Model" class="control-label"></label>
+                    <input asp-for="Model" class="form-control"/>
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+                <div class="form-group my-3">
+                    <label asp-for="Trim" class="control-label"></label>
+                    <input asp-for="Trim" class="form-control"/>
+                    <span asp-validation-for="Trim" class="text-danger"></span>
+                </div>
+                <div class="form-group my-3">
+                    <label asp-for="PurchaseDate" class="control-label">Date of purchase</label>
+                    <input asp-for="PurchaseDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
+                    <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+                </div>
                 <div class="form-group my-3">
                     <label asp-for="PurchasePrice" class="control-label">Price of purchase</label>
                     <input asp-for="PurchasePrice" class="form-control"/>
                     <span asp-validation-for="PurchasePrice" class="text-danger"></span>
                 </div>
-                </div>
+            </div>
             <div class="col-md-4">
-            <div class="form-group my-3">
-                <label asp-for="Repairs" class="control-label">Repairs done</label>
-                <input asp-for="Repairs" class="form-control"/>
-                <span asp-validation-for="Repairs" class="text-danger"></span>
-            </div>
-            <div class="form-group my-3">
-                <label asp-for="RepairCost" class="control-label">Repair cost</label>
-                <input asp-for="RepairCost" class="form-control"/>
-                <span asp-validation-for="RepairCost" class="text-danger"></span>
-            </div>
-            <div class="form-group my-3">
-                <label asp-for="LotDate" class="control-label">Lot date</label>
-                <input asp-for="LotDate" class="form-control"/>
-                <span asp-validation-for="LotDate" class="text-danger"></span>
-            </div>
-            <div class="form-group my-3">
-                <label asp-for="SellingPrice" class="control-label">Sale price</label>
-                <input asp-for="SellingPrice" class="form-control"/>
-                <span asp-validation-for="SellingPrice" class="text-danger"></span>
-            </div>
+                <div class="form-group my-3">
+                    <label asp-for="Repairs" class="control-label">Repairs done</label>
+                    <input asp-for="Repairs" class="form-control"/>
+                    <span asp-validation-for="Repairs" class="text-danger"></span>
+                </div>
+                <div class="form-group my-3">
+                    <label asp-for="RepairCost" class="control-label">Repair cost</label>
+                    <input asp-for="RepairCost" class="form-control"/>
+                    <span asp-validation-for="RepairCost" class="text-danger"></span>
+                </div>
+                <div class="form-group my-3">
+                    <label asp-for="LotDate" class="control-label">Lot date</label>
+                    <input asp-for="LotDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
+                    <span asp-validation-for="LotDate" class="text-danger"></span>
+                </div>
+                <div class="form-group my-3">
+                    <label asp-for="SellingPrice" class="control-label">Sale price</label>
+                    <input asp-for="SellingPrice" class="form-control"/>
+                    <span asp-validation-for="SellingPrice" class="text-danger"></span>
+                </div>
                 <div class="form-group my-3">
                     <label asp-for="Description" class="control-label">Car description</label>
                     <textarea asp-for="Description" class="form-control"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
+                <div class="form-group my-3" hidden>
+                    <label asp-for="ToSale" class="control-label"></label>
+                    <input asp-for="ToSale" class="form-control" value="@Model.ToSale"/>
                 </div>
-            <div class="form-group my-3">
-                <label asp-for="SaleDate" class="control-label">Sold on</label>
-                <input asp-for="SaleDate" class="form-control"/>
-                <span asp-validation-for="SaleDate" class="text-danger"></span>
-            </div>
-            <div class="form-group my-3">
-                <input type="submit" value="Save" class="btn btn-primary"/>
-            </div>
+                <div class="form-check form-switch">
+                  <label class="form-check-label fw-bold" for="IsSold">Sold</label>
+                  <input class="form-check-input" type="checkbox" role="switch" id="IsSold" onclick="isCheckedToggle()">
+                </div>
+                <div id="validateSoldDate" class="form-group my-3" hidden>
+                    <label asp-for="SaleDate" class="control-label">Sold on</label>
+                    <input asp-for="SaleDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(DateTime.MinValue.ToString("yyyy-MM-dd"))" />
+                    <span asp-validation-for="SaleDate" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="form-group my-3">
+                    <input type="submit" value="Save" class="btn btn-success"/>
+                    <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
+                </div>
         </div>
     </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+     async function isCheckedToggle() {
+        const IsSoldCheckBox = await document.querySelector("#IsSold");
+        const soldDiv = await document.querySelector("#validateSoldDate");
+        
+    if (IsSoldCheckBox.value = true )
+        {
+            soldDiv.toggleAttribute("hidden");
+        }
+    }
+    </script>
 }

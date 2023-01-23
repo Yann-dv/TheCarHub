@@ -1,8 +1,7 @@
-﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor Accessor
+﻿@using theCarHub.Data
 @using Microsoft.AspNetCore.Identity
-@using theCarHub.Data
+@inject IHttpContextAccessor Accessor
 @inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace theCarHub.Models;
@@ -7,6 +6,8 @@ namespace theCarHub.Models;
 public class CarViewModel
 {
     public int CarId { get; set; }
+    
+    public string OwnerId { get; set; }
     
     [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
     public DateTime Year { get; set; }

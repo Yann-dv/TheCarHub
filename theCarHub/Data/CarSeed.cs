@@ -16,6 +16,7 @@ public class CarSeed
                 {
                     new()
                     {
+                        OwnerId = "4151a77b-11f2-41e5-90bc-c07a6ed3e57c",
                         Year = new DateTime(1991, 01, 01, 00, 00, 00, 0000000),
                         Make = "Mazda",
                         Model = "Miata",
@@ -32,6 +33,7 @@ public class CarSeed
                     },
                     new()
                     {
+                        OwnerId = "4151a77b-11f2-41e5-90bc-c07a6ed3e57c",
                         Year = new DateTime(2007, 01, 01, 00, 00, 00, 0000000),
                         Make = "Jeep",
                         Model = "Liberty",
@@ -48,6 +50,7 @@ public class CarSeed
                     },
                     new()
                     {
+                        OwnerId = "4151a77b-11f2-41e5-90bc-c07a6ed3e57c",
                         Year = new DateTime(2007, 01, 01, 00, 00, 00, 0000000),
                         Make = "Dodge",
                         Model = "Grand Caravan",
@@ -64,6 +67,7 @@ public class CarSeed
                     },
                     new()
                     {
+                        OwnerId = "4151a77b-11f2-41e5-90bc-c07a6ed3e57c",
                         Year = new DateTime(2017, 01, 01, 00, 00, 00, 0000000),
                         Make = "Ford",
                         Model = "XLT",
@@ -80,6 +84,7 @@ public class CarSeed
                     },
                     new()
                     {
+                        OwnerId = "4151a77b-11f2-41e5-90bc-c07a6ed3e57c",
                         Year = new DateTime(2008, 01, 01, 00, 00, 00, 0000000),
                         Make = "Honda",
                         Model = "Civic",
@@ -96,6 +101,7 @@ public class CarSeed
                     },
                     new()
                     {
+                        OwnerId = "4151a77b-11f2-41e5-90bc-c07a6ed3e57c",
                         Year = new DateTime(2016, 01, 01, 00, 00, 00, 0000000),
                         Make = "Volkswagen",
                         Model = "GTI",
@@ -111,7 +117,8 @@ public class CarSeed
                         ToSale = false
                     },
                     new()
-                    {
+                    {                        
+                        OwnerId = "Not the same",
                         Year = new DateTime(2013, 01, 01, 00, 00, 00, 0000000),
                         Make = "Ford",
                         Model = "Edge",

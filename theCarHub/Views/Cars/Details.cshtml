@@ -4,29 +4,47 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<!--TODO Add owner contact info in car details, maybe also in img carousel (name, email, phone), OR contact form-->
+<!--TODO CHECK datetimes in Edit-->
+<!--TODO Check if owner is not allowed to edit other owner cars-->
+<h1 class="text-decoration-underline">Details</h1>
 
 <div>
-    <h4>Car</h4>
+    <h4>@Model.Make @Model.Model @Model.Trim @Model.Year.Year</h4>
     <hr />
     <dl class="row">
+        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
+        {
+            <dt class="col-sm-2">
+                Car Id
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-2">
+                Owner Id
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.OwnerId)
+            </dd>
+        }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Year)
+            Built in
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Year)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Make)
+            Brand
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Make)
+        </dd>
+        <dt class="col-sm-2">
+            Model
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Trim)
@@ -34,65 +52,91 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Trim)
         </dd>
+        @if (User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2">
+                Purchased on
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PurchaseDate)
+            </dd>
+        }
+        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
+        {
+            <dt class="col-sm-2">
+                Purchase price
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PurchasePrice)$
+            </dd>
+        }
+        @if (User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2">
+                Repairs done
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Repairs)
+            </dd>
+            <dt class="col-sm-2">
+                Repair cost
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RepairCost)$
+            </dd>
+            <dt class="col-sm-2">
+                Lot date
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LotDate)
+            </dd>
+        }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchaseDate)
+            Selling price
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PurchaseDate)
-        </dd>
+        @if (Model.SaleDate == DateTime.MinValue)
+        {
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SellingPrice)
+            </dd> 
+        }
+        else
+        {
+            <dd class="col-sm-10">SOLD OUT</dd>
+        }
+        
+        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
+        {
+            <dt class="col-sm-2">
+                Sale date
+            </dt>
+            <dd class="col-sm-10">
+                @if (this.Model.SaleDate == DateTime.MinValue)
+                {
+                    <span>Not sold</span>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.SaleDate)
+                }
+            </dd>
+        }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchasePrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PurchasePrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Repairs)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Repairs)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RepairCost)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RepairCost)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LotDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LotDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SellingPrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SellingPrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SaleDate)
-        </dt>
-        <dd class="col-sm-10">
-            @if(this.Model.SaleDate == DateTime.MinValue) {
-                <p>Not sold</p>
-            }
-            else{
-                @Html.DisplayFor(model => model.SaleDate)
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Description
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
+    @if (User.IsInRole("User"))
+    {
+    <a class="fs-5 link-primary" href="mailto:eddie@owner.com" title="Contact us by email">Contact us for buy this car or if you need more informations</a>
+    }
 </div>
 <div>
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
     {
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success text-light">Edit</a>
     }
-    <a asp-action="Index">Back to cars</a>
+    <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
 </div>

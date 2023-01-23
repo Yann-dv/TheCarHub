@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using theCarHub.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using theCarHub.Models;
 
 namespace theCarHub.Controllers
@@ -32,11 +35,15 @@ namespace theCarHub.Controllers
         // GET: Cars
         public async Task<IActionResult> Index()
         {
+
+            ApplicationUser user = await GetCurrentUserAsync();
+
             var model = await _context.Cars.Where(c => c.ToSale == true)
                 .Select(x =>
                     new CarViewModel
                     {
                         CarId = x.Id,
+                        OwnerId = x.OwnerId,
                         Year = x.Year,
                         Brand = x.Make,
                         Model = x.Model,
@@ -52,10 +59,115 @@ namespace theCarHub.Controllers
                         ToSale = x.ToSale
                     }).ToListAsync();
 
-            return View(model);
+            string baseUrl = "https://thecarhubapi.azurewebsites.net/";
+            List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage Res = await client.GetAsync("api/storage/get");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var empResponse = Res.Content.ReadAsStringAsync().Result;
+                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(empResponse);
+                }
+            }
+
+            ViewBag.CurrentUserId = _userManager.GetUserId(HttpContext.User);
+
+            return View(Tuple.Create(model, ListOfImagesUrl));
+        }
+        
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteImage(CarImagesNewModel imgObject)
+        {
+            if (imgObject == null || _context.Cars == null)
+            {
+                return NotFound();
+            }
+
+            var modelToDelete = new CarImagesNewModel
+            {
+                content = imgObject.content,
+                name = imgObject.name,
+                uri = imgObject.uri,
+                contentType = imgObject.contentType
+            };
+            
+            return View(modelToDelete);
         }
 
-        // GET: Cars/Details/5
+        [HttpDelete]
+        [AcceptVerbs("DELETE")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteImageConfirmation(string fileName)
+        {
+            string baseUrl = "https://thecarhubapi.azurewebsites.net/";
+            List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+                HttpResponseMessage Res = await client.DeleteAsync("api/Storage/filename?filename=" + fileName);
+                if (Res.IsSuccessStatusCode)
+                {
+                    var responseString = Res.Content.ReadAsStringAsync().Result;
+                    Debug.WriteLine(responseString);
+                    return RedirectToAction(nameof(Index));
+                }
+                
+                Debug.WriteLine("The image no longer exists in the server");
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile file, string imageNameIndexed)
+        {
+            var filePath = Path.GetTempFileName();
+
+            using (var stream = System.IO.File.Create(filePath))
+            {
+
+                await file.CopyToAsync(stream);
+            }
+            string url = "https://thecarhubapi.azurewebsites.net/api/storage/Upload/";
+            try
+            {
+                var upfilebytes = System.IO.File.ReadAllBytes(filePath);
+
+                HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
+                MultipartFormDataContent content = new MultipartFormDataContent();
+                //byteArray Image
+                ByteArrayContent byteArrayContent = new ByteArrayContent(upfilebytes);
+
+                content.Add(byteArrayContent, "File", imageNameIndexed.ToLower().Replace(" ", "") + ".jpg");
+
+                var response = await client.PostAsync(url, content);
+
+                var responseString = response.Content.ReadAsStringAsync().Result;
+                
+                //debug
+                Debug.WriteLine(responseString);
+
+            }
+            catch (Exception e)
+            {
+                //debug
+                Debug.WriteLine("Exception Caught: " + e.ToString());
+
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Cars == null)
@@ -69,6 +181,8 @@ namespace theCarHub.Controllers
             {
                 return NotFound();
             }
+            
+            ViewBag.CurrentUserId = _userManager.GetUserId(HttpContext.User);
 
             return View(car);
         }
@@ -79,22 +193,30 @@ namespace theCarHub.Controllers
         {
             return View();
         }
-
+        
         // POST: Cars/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind(
-                "Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
-            Car car)
+        [Bind("Id, OwnerId, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")] 
+        Car car)
         {
+            //car.OwnerId = user.Id;
+            
             if (ModelState.IsValid)
             {
+                var user = await GetCurrentUserAsync();
+                car.OwnerId = user.Id;
                 _context.Add(car);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("", "Unable to create the car : the model seems invalid. Try again, and if the problem persists, see your system administrator.");
             }
 
             return View(car);
@@ -126,10 +248,11 @@ namespace theCarHub.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
             [Bind(
-                "Id, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
+                "Id, OwnerId, Year, Make, Model, Trim, PurchaseDate, PurchasePrice, Repairs, RepairCost, LotDate, SellingPrice, SaleDate, Description, ToSale")]
             Car car)
         {
-            if (id != car.Id)
+            ViewBag.CurrentUserId = _userManager.GetUserId(HttpContext.User);
+            if (id != car.Id || car.OwnerId.ToString() != ViewBag.CurrentUserId.ToString())
             {
                 return NotFound();
             }
@@ -170,7 +293,7 @@ namespace theCarHub.Controllers
 
             var car = await _context.Cars
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null)
+            if (car == null ||  car.OwnerId != _userManager.GetUserId(HttpContext.User))
             {
                 return NotFound();
             }

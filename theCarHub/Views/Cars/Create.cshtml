@@ -13,10 +13,14 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
             <div class="col-md-4">
-            <div class="form-group my-3">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control"/>
-                <span asp-validation-for="Year" class="text-danger"></span>
+                <div class="form-group my-3">
+                    <label asp-for="Year" class="control-label"></label>
+                    <input asp-for="Year" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+            <div class="form-group my-3" hidden>
+                <label asp-for="OwnerId" class="control-label"></label>
+                <input asp-for="OwnerId" class="form-control" value="0"/>
             </div>
             <div class="form-group my-3">
                 <label asp-for="Make" class="control-label">Brand</label>
@@ -35,7 +39,7 @@
             </div>
             <div class="form-group my-3">
                 <label asp-for="PurchaseDate" class="control-label">Date of purchase</label>
-                <input asp-for="PurchaseDate" class="form-control"/>
+                <input asp-for="PurchaseDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
                 <span asp-validation-for="PurchaseDate" class="text-danger"></span>
             </div>
                 <div class="form-group my-3">
@@ -57,7 +61,7 @@
             </div>
             <div class="form-group my-3">
                 <label asp-for="LotDate" class="control-label">Lot date</label>
-                <input asp-for="LotDate" class="form-control"/>
+                <input asp-for="LotDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
                 <span asp-validation-for="LotDate" class="text-danger"></span>
             </div>
             <div class="form-group my-3">
@@ -72,18 +76,16 @@
                 </div>
                 </div>
             <div class="form-group my-3">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Create" class="btn btn-success"/>
             </div>
         </div>
     </form>
 </div>
 
 <div class="my-4">
-    <a asp-action="Index">Back to List</a>
+    <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
 </div>
 
 @section Scripts {
-    <script>
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -1,0 +1,20 @@
+@model CarImagesNewModel
+
+@{
+    ViewData["Title"] = "Delete Car Image";
+}
+
+<h1 class="text-decoration-underline">Delete Car Image</h1>
+
+<h3 class="text-danger">Are you sure you want to delete this image ?</h3>
+<div>
+    <h4>@Model.name</h4>
+    
+    <img src="@Model.uri" alt="The image no longer exists in the server" class="w-50">
+    
+    <form asp-action="DeleteImageConfirmation" class="my-3">
+        <input id="filename" name="filename" value="@Model.name" hidden/>
+        <input type="submit" value="Delete from server" class="btn btn-danger"/> |
+        <button class="btn btn-primary text-light" onclick="JavaScript:window.history.back(1); return false;">Back</button>
+    </form>
+</div>

@@ -7,10 +7,12 @@ namespace theCarHub.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+       // private readonly ApiController _apiController;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger)//, ApiController apiController)
         {
             _logger = logger;
+            //_apiController = apiController;
         }
 
         public IActionResult Index()
