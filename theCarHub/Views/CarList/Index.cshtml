@@ -12,41 +12,41 @@
 <table id="carTable" class="table text-light my-4">
     <thead class="bg-gradient">
     <tr class="text-center">
-        <th>
-            @Html.ActionLink("Car Id", "Index", new { sortOrder = ViewBag.CarIdSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink("Car Id", "Index", new { sortOrder = ViewBag.CarIdSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink("Built in", "Index", new { sortOrder = ViewBag.YearSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink("Built in", "Index", new { sortOrder = ViewBag.YearSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.Brand), "Index", new { sortOrder = ViewBag.BrandSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Brand), "Index", new { sortOrder = ViewBag.BrandSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.Model), "Index", new { sortOrder = ViewBag.ModelSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Model), "Index", new { sortOrder = ViewBag.ModelSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink(@Html.DisplayNameFor(model => model.Trim), "Index", new { sortOrder = ViewBag.TrimSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink(@Html.DisplayNameFor(model => model.Trim), "Index", new { sortOrder = ViewBag.TrimSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink("Purchase date", "Index", new { sortOrder = ViewBag.PurchaseDateSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink("Purchase date", "Index", new { sortOrder = ViewBag.PurchaseDateSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink("Purchase price", "Index", new { sortOrder = ViewBag.PurchasePriceSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink("Purchase price", "Index", new { sortOrder = ViewBag.PurchasePriceSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink("Repair cost", "Index", new { sortOrder = ViewBag.RepairCostSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink("Repair cost", "Index", new { sortOrder = ViewBag.RepairCostSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink("Sale price", "Index", new { sortOrder = ViewBag.SellingPriceSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink("Sale price", "Index", new { sortOrder = ViewBag.SellingPriceSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink("Sold on", "Index", new { sortOrder = ViewBag.SaleDateSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink("Sold on", "Index", new { sortOrder = ViewBag.SaleDateSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th>
-            @Html.ActionLink("Sold / To sale", "Index", new { sortOrder = ViewBag.ToSaleSortParm }, new { @class = "btn btn-secondary" })
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
+            @Html.ActionLink("To sale", "Index", new { sortOrder = ViewBag.ToSaleSortParm }, new { @class = "stretched-link text-light" })
         </th>
-        <th><a class="btn btn-secondary">Actions</a></th>
-        <th>
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1"><a class="stretched-link text-light">Actions</a></th>
+        <th class="align-middle rounded-0 btn btn-secondary position-relative d-table-cell p-1">
             <img src="~/arrows.png" alt="Up and down arrows icon" title="Click on a parameter to sort by" style="width:1.4rem">
         </th>
     </tr>
@@ -55,37 +55,37 @@
     @foreach (var item in Model)
     {
         <tr class="@(item.ToSale ? "table-info" : "table-light") text-center">
-            <td>
+            <td class="align-middle border-start border-end">
                 @Html.DisplayFor(modelItem => item.CarId)
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @Html.DisplayFor(modelItem => item.Year.Year)
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @Html.DisplayFor(modelItem => item.Brand)
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @Html.DisplayFor(modelItem => item.Model)
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @Html.DisplayFor(modelItem => item.Trim)
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @Html.DisplayFor(modelItem => item.PurchaseDate)
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @Html.DisplayFor(modelItem => item.PurchasePrice)$
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @Html.DisplayFor(modelItem => item.RepairCost)$
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @Html.DisplayFor(modelItem => item.SellingPrice)$
             </td>
-            <td>
+            <td class="align-middle border-end">
                 @if (item.SaleDate == DateTime.MinValue)
                 {
-                    <p>-</p>
+                    <span>-</span>
                 }
                 else
                 {
@@ -94,12 +94,12 @@
             </td>
             @if (User.IsInRole("Admin"))
             {
-                <td>
-                    <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "CarList", new { id = @item.CarId, toSaleValue = @item.ToSale })'" class="btn @(item.ToSale ? "btn-danger" : "btn-success") w-50 text-light ms-3 fs-5 py-0 px-2 carListToggleBtn">
+                <td class="align-middle border-end">
+                    <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "CarList", new { id = @item.CarId, toSaleValue = @item.ToSale })'" class="btn @(item.ToSale ? "btn-danger" : "btn-success") w-75 text-light fs-5 py-0 px-2 carListToggleBtn">
                         @(item.ToSale ? " - " : " + ")
                     </button>
                 </td>
-                <td>
+                <td class="align-middle">
                     <a asp-action="Details" asp-route-id="@item.CarId">Details</a> |
                     <a asp-action="Edit" asp-route-id="@item.CarId">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.CarId">Delete</a>
@@ -107,9 +107,9 @@
             }
             else
             {
-                <td><a asp-action="Details" asp-route-id="@item.CarId">Details</a></td>
+                <td class="align-middle"><a asp-action="Details" asp-route-id="@item.CarId">Details</a></td>
             }
-            <td></td>
+            <td class="align-middle border-end"></td>
         </tr>
     }
     </tbody>
