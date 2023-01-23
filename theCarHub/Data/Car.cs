@@ -30,20 +30,20 @@ namespace theCarHub.Data
         public DateTime PurchaseDate { get; set; }
         
         [Required]
-        public float PurchasePrice{ get; set; }
+        public decimal PurchasePrice{ get; set; }
         
         [Required]
         public string Repairs{ get; set; }
         
         [Required]
-        public float RepairCost{ get; set; }
+        public decimal RepairCost{ get; set; }
         
         [Required]
         [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LotDate{ get; set; }
         
         [Required]
-        public float SellingPrice { get; set; }
+        public decimal SellingPrice { get; set; }
         
         [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SaleDate{ get; set; }
