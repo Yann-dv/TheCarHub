@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc;
 
 namespace theCarHub.Models;
@@ -19,15 +20,18 @@ public class CarViewModel
     [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
     public DateTime PurchaseDate { get; set; }
     
+    [Column(TypeName = "decimal(18,2)")]
     public decimal PurchasePrice { get; set; }
     
     public string Repairs { get; set; }
     
+    [Column(TypeName = "decimal(18,2)")]
     public decimal RepairCost { get; set; }
 
     [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
     public DateTime LotDate { get; set; }
     
+    [Column(TypeName = "decimal(18,2)")]
     public decimal SellingPrice { get; set; }
     
     [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
