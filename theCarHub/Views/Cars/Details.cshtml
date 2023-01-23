@@ -52,7 +52,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Trim)
         </dd>
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
         {
             <dt class="col-sm-2">
                 Purchased on
@@ -60,18 +60,12 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.PurchaseDate)
             </dd>
-        }
-        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
-        {
             <dt class="col-sm-2">
                 Purchase price
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.PurchasePrice)$
             </dd>
-        }
-        @if (User.IsInRole("Admin"))
-        {
             <dt class="col-sm-2">
                 Repairs done
             </dt>
@@ -97,7 +91,7 @@
         @if (Model.SaleDate == DateTime.MinValue)
         {
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.SellingPrice)
+                @Html.DisplayFor(model => model.SellingPrice)$
             </dd> 
         }
         else
@@ -128,9 +122,9 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
-    @if (User.IsInRole("User"))
+    @if (User.IsInRole("User") || ViewBag.CurrentUserId != Model.OwnerId)
     {
-    <a class="fs-5 link-primary" href="mailto:eddie@owner.com" title="Contact us by email">Contact us for buy this car or if you need more informations</a>
+    <a class="fs-5 link-primary" href="mailto:eddie@owner.com" title="Contact us by email">Contact us by mail for buy this car or if you need more informations</a>
     }
 </div>
 <div>
