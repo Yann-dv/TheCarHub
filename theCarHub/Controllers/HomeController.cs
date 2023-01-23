@@ -30,5 +30,13 @@ namespace theCarHub.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        
+        // If we want to add custom errors views
+        /*[Route("/Home/HandleError/{code:int}")]
+        public IActionResult HandleError(int code)
+        {
+            ViewData["ErrorMessage"] = $"Error occurred. The ErrorCode is: {code}";
+            return View("~/Views/Shared/HandleError.cshtml");
+        }*/
     }
 }

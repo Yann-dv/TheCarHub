@@ -13,6 +13,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
             <div class="col-md-4">
+                <input type="hidden" asp-for="Id" hidden/>
                 <div class="form-group my-3">
                     <label asp-for="Year" class="control-label"></label>
                     <input asp-for="Year" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(new DateTime(1990, 1, 1, 00, 00, 0000).ToString("yyyy-MM-dd"))" />
