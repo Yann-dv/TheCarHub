@@ -34,6 +34,9 @@
             @Html.ActionLink("Purchase price", "Index", new { sortOrder = ViewBag.PurchasePriceSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
+            @Html.ActionLink("Repair cost", "Index", new { sortOrder = ViewBag.RepairCostSortParm }, new { @class = "btn btn-secondary" })
+        </th>
+        <th>
             @Html.ActionLink("Sale price", "Index", new { sortOrder = ViewBag.SellingPriceSortParm }, new { @class = "btn btn-secondary" })
         </th>
         <th>
@@ -72,6 +75,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PurchasePrice)$
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RepairCost)$
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SellingPrice)$
