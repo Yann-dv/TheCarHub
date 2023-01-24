@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mail;
@@ -79,18 +80,42 @@ namespace theCarHub.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            /// 
+
             [Required]
+            [DefaultValue("EmptyFirstName")]
             [Display(Name = "First name")]
-            public string FirstName { get; set; }
-            
+            public string FirstName
+            {
+                get { return "EmptyFirstName"; }
+                set
+                {
+                    if (value != null)
+                    {
+                        FirstName = value;
+                    }
+                }
+            }
+
             [Required]
-            [Display(Name= "Last name")]
-            public string LastName { get; set; }
-            
+            [Display(Name = "Last name")]
+            [DefaultValue("EmptyLastName")]
+            public string LastName
+            {
+                get { return "EmptyLastName"; }
+                set
+                {
+                    if (value != null)
+                    {
+                        LastName = value;
+                    }
+                }
+            }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
-            public string Email { get; set; }
+            public string Email { get; set; } = "EmptyEmail";
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

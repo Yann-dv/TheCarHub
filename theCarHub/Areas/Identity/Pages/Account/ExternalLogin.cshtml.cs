@@ -3,6 +3,7 @@
 #nullable disable
 
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
@@ -78,6 +79,33 @@ namespace theCarHub.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required]
+            [DefaultValue("EmptyFirstName")]
+            public string FirstName
+            {
+                get { return "EmptyFirstName"; }
+                set
+                {
+                    if (value != null)
+                    {
+                        FirstName = value;
+                    }
+                }
+            }
+            
+            [Required]
+            [DefaultValue("EmptyLastName")]
+            public string LastName
+            {
+                get { return "EmptyLastName"; }
+                set
+                {
+                    if (value != null)
+                    {
+                        LastName = value;
+                    }
+                }
+            }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
