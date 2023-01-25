@@ -20,19 +20,16 @@ public class CarViewModel
     [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
     public DateTime PurchaseDate { get; set; }
     
-    [Column(TypeName = "decimal(18,2)")]
     public decimal PurchasePrice { get; set; }
     
     public string Repairs { get; set; }
     
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal RepairCost { get; set; }
+    public int RepairCost { get; set; }
 
     [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
     public DateTime LotDate { get; set; }
     
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal SellingPrice { get; set; }
+    public int SellingPrice { get; set; }
     
     [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:MM-yyyy}", ApplyFormatInEditMode = true)]
     public DateTime SaleDate { get; set; }

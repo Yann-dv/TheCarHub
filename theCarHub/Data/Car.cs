@@ -1,9 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Globalization;
-using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Mvc;
-using theCarHub.Data;
 
 namespace theCarHub.Data
 {
@@ -31,23 +28,23 @@ namespace theCarHub.Data
         public DateTime PurchaseDate { get; set; }
         
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal PurchasePrice{ get; set; }
+        [Range(1, 99999)]
+        public int PurchasePrice{ get; set; }
         
         [Required]
         public string Repairs{ get; set; }
         
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal RepairCost{ get; set; }
+        [Range(1, 99999)]
+        public int RepairCost{ get; set; }
         
         [Required]
         [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LotDate{ get; set; }
         
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal SellingPrice { get; set; }
+        [Range(1, 99999)]
+        public int SellingPrice { get; set; }
         
         [BindProperty, DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SaleDate{ get; set; }

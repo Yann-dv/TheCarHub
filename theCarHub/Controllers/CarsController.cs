@@ -35,9 +35,9 @@ namespace theCarHub.Controllers
         // GET: Cars
         public async Task<IActionResult> Index()
         {
+           await GetCurrentUserAsync();
 
-            ApplicationUser user = await GetCurrentUserAsync();
-
+            //Cars
             var model = await _context.Cars.Where(c => c.ToSale == true)
                 .Select(x =>
                     new CarViewModel
@@ -59,8 +59,9 @@ namespace theCarHub.Controllers
                         ToSale = x.ToSale
                     }).ToListAsync();
 
+            //Images
             string baseUrl = "https://thecarhubapi.azurewebsites.net/";
-            List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
+            List<CarImagesModel> ListOfImagesUrl = new List<CarImagesModel>();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseUrl);
@@ -70,7 +71,7 @@ namespace theCarHub.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                     var empResponse = Res.Content.ReadAsStringAsync().Result;
-                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesNewModel>>(empResponse);
+                    ListOfImagesUrl = JsonConvert.DeserializeObject<List<CarImagesModel>>(empResponse);
                 }
             }
 
@@ -80,14 +81,14 @@ namespace theCarHub.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteImage(CarImagesNewModel imgObject)
+        public async Task<IActionResult> DeleteImage(CarImagesModel imgObject)
         {
             if (imgObject == null || _context.Cars == null)
             {
                 return NotFound();
             }
 
-            var modelToDelete = new CarImagesNewModel
+            var modelToDelete = new CarImagesModel
             {
                 content = imgObject.content,
                 name = imgObject.name,
@@ -105,7 +106,7 @@ namespace theCarHub.Controllers
         public async Task<IActionResult> DeleteImageConfirmation(string fileName)
         {
             string baseUrl = "https://thecarhubapi.azurewebsites.net/";
-            List<CarImagesNewModel> ListOfImagesUrl = new List<CarImagesNewModel>();
+            List<CarImagesModel> ListOfImagesUrl = new List<CarImagesModel>();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseUrl);
