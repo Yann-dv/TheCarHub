@@ -9,6 +9,7 @@ using theCarHub.Models;
 
 namespace theCarHub.Controllers
 {
+    [Authorize]
     public class CarListController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -148,7 +149,7 @@ namespace theCarHub.Controllers
                     }
             return View(modelToSort.ToList());
         }
-
+        
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
