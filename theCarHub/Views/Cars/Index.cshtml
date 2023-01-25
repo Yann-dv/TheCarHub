@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.IdentityModel.Tokens
 @using theCarHub.Controllers
+@using System.Globalization
 
 @model Tuple<List<CarViewModel>, List<CarImagesModel>?>
 
@@ -157,11 +158,11 @@
             <p class="my-2">Description : @Html.DisplayFor(modelItem => carViewModel.Description)</p>
             @if (carViewModel.SaleDate != DateTime.MinValue)
             {
-                <p class="text-decoration-line-through">Price : @Html.DisplayFor(modelItem => carViewModel.SellingPrice)$ (SOLD) <spans>| Sold on : @Html.DisplayFor(modelItem => carViewModel.SaleDate)</spans></p>
+                <p class="text-decoration-line-through">Price : @Html.Raw(carViewModel.SellingPrice.ToString("C2", CultureInfo.CurrentCulture)) (SOLD) <spans>| Sold on : @Html.DisplayFor(modelItem => carViewModel.SaleDate)</spans></p>
             }
             else
             {
-                <p>Price : <span class="text-decoration-underline">@Html.DisplayFor(modelItem => carViewModel.SellingPrice)$</span></p>
+                <p>Price : <span class="text-decoration-underline">@Html.Raw(carViewModel.SellingPrice.ToString("C2", CultureInfo.CurrentCulture))</span></p>
             }
             <div class="carCardFooter">
                 @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == carViewModel.OwnerId)

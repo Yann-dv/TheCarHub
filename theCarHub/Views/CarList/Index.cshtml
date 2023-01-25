@@ -74,13 +74,13 @@
                 @Html.DisplayFor(modelItem => item.PurchaseDate)
             </td>
             <td class="align-middle border-end">
-                @Html.DisplayFor(modelItem => item.PurchasePrice)$
+                @Html.Raw(item.PurchasePrice.ToString("C2", CultureInfo.CurrentCulture))
             </td>
             <td class="align-middle border-end">
-                @Html.DisplayFor(modelItem => item.RepairCost)$
+                @Html.Raw(item.RepairCost.ToString("C2", CultureInfo.CurrentCulture))
             </td>
             <td class="align-middle border-end">
-                @Html.DisplayFor(modelItem => item.SellingPrice)$
+                @Html.Raw(item.SellingPrice.ToString("C2", CultureInfo.CurrentCulture))
             </td>
             <td class="align-middle border-end">
                 @if (item.SaleDate == DateTime.MinValue)

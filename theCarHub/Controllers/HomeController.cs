@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Globalization;
 using theCarHub.Models;
 
 namespace theCarHub.Controllers
@@ -17,6 +18,11 @@ namespace theCarHub.Controllers
 
         public IActionResult Index()
         {
+            var cultureInfo = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
             return View();
         }
 
