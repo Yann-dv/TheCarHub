@@ -1,8 +1,13 @@
+using System.Globalization;
+
 namespace theCarHub.Models;
 
-public class CarImagesModel 
+public class CarImagesModel
 {
-    public int ImageId { get; set; }
-    public int CarId { get; set; }
-    public string? Url { get; set; }
+    public string uri { get; set; }
+    public string name { get; set; }
+    public string contentType { get; set; }
+    public string content { get; set; }
+    
+    public IFormFile image { get; set; }
 }

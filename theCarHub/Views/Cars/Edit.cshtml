@@ -1,4 +1,27 @@
-﻿@model theCarHub.Data.Car
+﻿@using System.Globalization
+@model theCarHub.Data.Car
+
+@functions {
+    private string PriceFormatting(string modelValue)
+    {
+        {
+            if(Convert.ToDecimal(modelValue) > 999.99m)
+            {
+                for(var i = 18; i >= modelValue.Length; i-=3)
+                {
+                    modelValue = modelValue.Insert(i, ",");
+                    modelValue = modelValue.Replace(',', '.');
+                }
+            }
+            else 
+            {
+                modelValue = modelValue.Replace(',', '.');
+            }
+            return modelValue;
+        }
+    }
+
+}
 
 @{
     ViewData["Title"] = "Edit";
@@ -45,7 +68,7 @@
                 </div>
                 <div class="form-group my-3">
                     <label asp-for="PurchasePrice" class="control-label">Price of purchase</label>
-                    <input asp-for="PurchasePrice" class="form-control"/>
+                    <input asp-for="PurchasePrice" class="form-control" />
                     <span asp-validation-for="PurchasePrice" class="text-danger"></span>
                 </div>
             </div>
@@ -57,7 +80,7 @@
                 </div>
                 <div class="form-group my-3">
                     <label asp-for="RepairCost" class="control-label">Repair cost</label>
-                    <input asp-for="RepairCost" class="form-control"/>
+                    <input asp-for="RepairCost" class="form-control" />
                     <span asp-validation-for="RepairCost" class="text-danger"></span>
                 </div>
                 <div class="form-group my-3">
