@@ -1,4 +1,5 @@
-﻿@model theCarHub.Data.Car
+﻿@using System.Globalization
+@model theCarHub.Data.Car
 
 @{
     ViewData["Title"] = "Details";
@@ -61,7 +62,7 @@
                 Purchase price
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PurchasePrice)$
+                @Html.Raw(Model.PurchasePrice.ToString("C2", CultureInfo.CurrentCulture))
             </dd>
             <dt class="col-sm-2">
                 Repairs done
@@ -73,7 +74,7 @@
                 Repair cost
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.RepairCost)$
+                @Html.Raw(Model.RepairCost.ToString("C2", CultureInfo.CurrentCulture))
             </dd>
             <dt class="col-sm-2">
                 Lot date
@@ -88,7 +89,7 @@
         @if (Model.SaleDate == DateTime.MinValue)
         {
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.SellingPrice)$
+                @Html.Raw(Model.SellingPrice.ToString("C2", CultureInfo.CurrentCulture))
             </dd> 
         }
         else
