@@ -53,7 +53,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 
-if (builder.Configuration["Authentication:Facebook:AppId"] == null && Environment.GetEnvironmentVariable("Facebook_AppId") != null && Environment.GetEnvironmentVariable("Development") != null) 
+if (builder.Configuration["Authentication:Facebook:AppId"] == null && Environment.GetEnvironmentVariable("Facebook_AppId") != null) 
 {
     builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
     {
@@ -62,7 +62,7 @@ if (builder.Configuration["Authentication:Facebook:AppId"] == null && Environmen
     });
 }
 
-else if (builder.Configuration["Authentication:Facebook:AppId"] != null && Environment.GetEnvironmentVariable("Facebook_AppId") == null && Environment.GetEnvironmentVariable("Development") != null)
+else if (builder.Configuration["Authentication:Facebook:AppId"] != null && Environment.GetEnvironmentVariable("Facebook_AppId") == null)
 {
     builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
     {
