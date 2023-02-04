@@ -14,11 +14,11 @@
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
-                <label asp-for="Input.TwoFactorCode" class="form-label"></label>
+                <label asp-for="Input.TwoFactorCode" class="text-black form-label"></label>
                 <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
             </div>
             <div class="checkbox mb-3">
-                <label asp-for="Input.RememberMachine" class="form-label">
+                <label asp-for="Input.RememberMachine" class="text-black form-label">
                     <input asp-for="Input.RememberMachine" />
                     @Html.DisplayNameFor(m => m.Input.RememberMachine)
                 </label>
