@@ -60,7 +60,7 @@ namespace theCarHub.Controllers
                     }).ToListAsync();
 
             //Images
-            string baseUrl = "https://thecarhubapi.azurewebsites.net/";
+            string baseUrl = "https://thecarhub-api.azurewebsites.net/";
             List<CarImagesModel> ListOfImagesUrl = new List<CarImagesModel>();
             using (var client = new HttpClient())
             {
