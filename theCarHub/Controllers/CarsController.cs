@@ -105,7 +105,7 @@ namespace theCarHub.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteImageConfirmation(string fileName)
         {
-            string baseUrl = "https://thecarhubapi.azurewebsites.net/";
+            string baseUrl = "https://thecarhub-api.azurewebsites.net/";
             List<CarImagesModel> ListOfImagesUrl = new List<CarImagesModel>();
             using (var client = new HttpClient())
             {
@@ -135,7 +135,7 @@ namespace theCarHub.Controllers
 
                 await file.CopyToAsync(stream);
             }
-            string url = "https://thecarhubapi.azurewebsites.net/api/storage/Upload/";
+            string url = "https://thecarhub-api.azurewebsites.net/api/storage/Upload/";
             try
             {
                 var upfilebytes = System.IO.File.ReadAllBytes(filePath);
