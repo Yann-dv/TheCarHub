@@ -107,7 +107,7 @@
                   <input class="form-check-input" type="checkbox" role="switch" id="IsSold" onclick="isCheckedToggle()">
                 </div>
                 <div id="validateSoldDate" class="form-group my-3" hidden>
-                    <label asp-for="SaleDate" class="control-label">Sold on</label>
+                    <label asp-for="SaleDate" class="control-label">Sold on : (let the 01/01/0001 value for keep car on sale)</label>
                     <input asp-for="SaleDate" class="form-control" max="@DateTime.Now.ToString("yyyy-MM-dd")" min="@(DateTime.MinValue.ToString("yyyy-MM-dd"))" />
                     <span asp-validation-for="SaleDate" class="text-danger"></span>
                 </div>

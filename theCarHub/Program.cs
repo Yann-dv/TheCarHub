@@ -53,7 +53,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 
-if (builder.Configuration["Authentication:Facebook:AppId"] == null && Environment.GetEnvironmentVariable("Facebook_AppId") != null)
+if (builder.Configuration["Authentication:Facebook:AppId"] == null && Environment.GetEnvironmentVariable("Facebook_AppId") != null) 
 {
     builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
     {

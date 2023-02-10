@@ -85,32 +85,12 @@ namespace theCarHub.Areas.Identity.Pages.Account
             [Required]
             [DefaultValue("EmptyFirstName")]
             [Display(Name = "First name")]
-            public string FirstName
-            {
-                get { return "EmptyFirstName"; }
-                set
-                {
-                    if (value != null)
-                    {
-                        FirstName = value;
-                    }
-                }
-            }
+            public string FirstName { get; set; }
 
             [Required]
             [Display(Name = "Last name")]
             [DefaultValue("EmptyLastName")]
-            public string LastName
-            {
-                get { return "EmptyLastName"; }
-                set
-                {
-                    if (value != null)
-                    {
-                        LastName = value;
-                    }
-                }
-            }
+            public string LastName { get; set; }
 
             [Required]
             [EmailAddress]
