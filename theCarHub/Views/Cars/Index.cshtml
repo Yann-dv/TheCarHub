@@ -145,7 +145,7 @@
                     @foreach (var image in Model.Item2)
                     {
 
-                            if (image.name.ToLower().Replace(" ", "") == currentCarImgName + "-1.jpg")
+                        if (image.name.ToLower().Replace(" ", "") == currentCarImgName + "-1.jpg")
                         {
                             <!-- Button trigger modal -->
                             <button type="button" class="bg-transparent border-0" data-bs-toggle="modal" data-bs-target="@($"#modalViewOfCarId{carViewModel.CarId}")">
@@ -183,9 +183,13 @@
                 else
                 {
                     <td>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@($"#modalViewBuyOfCarId{carViewModel.CarId}")">Buy</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@($"#modalViewBuyOfCarId{carViewModel.CarId}")">Buy</button>
                         <a asp-action="Details" asp-route-id="@carViewModel.CarId" class="btn btn-primary link-light">Details</a>
-                        <!-- Modal for Buy/contact-->
+                    </td>
+                }
+            </div>
+        </div>
+        <!-- Modal for Buy/contact-->
                         <div class="modal fade" id="@($"modalViewBuyOfCarId{carViewModel.CarId}")" tabindex="-1" aria-labelledby="modalView" aria-hidden="true">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content bg-dark text-white">
@@ -204,10 +208,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!--end modal-->
-                    </td>
-                }
-            </div>
-        </div>
+        <!--end modal-->
     }
 </div>
