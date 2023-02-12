@@ -32,6 +32,7 @@ namespace theCarHub.Controllers
             return user?.Id;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string sortOrder)
         {
             var currentUserId = await GetCurrentUserId();
