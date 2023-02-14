@@ -294,12 +294,16 @@ namespace theCarHub.Controllers
 
             var car = await _context.Cars
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null ||  car.OwnerId != _userManager.GetUserId(HttpContext.User))
+            if (car == null)
             {
                 return NotFound();
             }
 
-            return View(car);
+            if (car.OwnerId == _userManager.GetUserId(HttpContext.User) || User.IsInRole("SuperAdmin"))
+            {
+                return View(car);
+            }
+            return NotFound();
         }
 
         [Authorize(Roles = "SuperAdmin, Admin")]

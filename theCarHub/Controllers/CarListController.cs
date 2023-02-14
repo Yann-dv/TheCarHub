@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using theCarHub.Data;
 using theCarHub.Models;
 
@@ -36,33 +37,64 @@ namespace theCarHub.Controllers
         public async Task<IActionResult> Index(string sortOrder)
         {
             var currentUserId = await GetCurrentUserId();
-            var model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars.Where(c => c.OwnerId == currentUserId)
-                .Select(x =>
-                new CarViewModel
-                {
-                    CarId = x.Id,
-                    OwnerId = x.OwnerId,
-                    Year = x.Year,
-                    Brand = x.Make,
-                    Model = x.Model,
-                    Trim = x.Trim,
-                    PurchaseDate = x.PurchaseDate,
-                    PurchasePrice = x.PurchasePrice,
-                    Repairs = x.Repairs,
-                    RepairCost = x.RepairCost,
-                    LotDate = x.LotDate,
-                    SellingPrice = x.SellingPrice,
-                    SaleDate = x.SaleDate,
-                    Description = x.Description,
-                    ToSale = x.ToSale
-                }));
-            foreach (var item in model)
+            List<CarViewModel> model = null;
+
+            if (User.IsInRole("SuperAdmin"))
             {
-                var userCar = await _context.UserCars.FirstOrDefaultAsync(x =>
-                    x.UserId == currentUserId && x.CarId == item.CarId);
-                if (userCar != null)
+                model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars
+                    .Select(x =>
+                        new CarViewModel
+                        {
+                            CarId = x.Id,
+                            OwnerId = x.OwnerId,
+                            Year = x.Year,
+                            Brand = x.Make,
+                            Model = x.Model,
+                            Trim = x.Trim,
+                            PurchaseDate = x.PurchaseDate,
+                            PurchasePrice = x.PurchasePrice,
+                            Repairs = x.Repairs,
+                            RepairCost = x.RepairCost,
+                            LotDate = x.LotDate,
+                            SellingPrice = x.SellingPrice,
+                            SaleDate = x.SaleDate,
+                            Description = x.Description,
+                            ToSale = x.ToSale
+                        }));
+            }
+
+            else
+            { 
+                model = await EntityFrameworkQueryableExtensions.ToListAsync(_context.Cars
+                    .Where(c => c.OwnerId == currentUserId)
+                    .Select(x =>
+                        new CarViewModel
+                        {
+                            CarId = x.Id,
+                            OwnerId = x.OwnerId,
+                            Year = x.Year,
+                            Brand = x.Make,
+                            Model = x.Model,
+                            Trim = x.Trim,
+                            PurchaseDate = x.PurchaseDate,
+                            PurchasePrice = x.PurchasePrice,
+                            Repairs = x.Repairs,
+                            RepairCost = x.RepairCost,
+                            LotDate = x.LotDate,
+                            SellingPrice = x.SellingPrice,
+                            SaleDate = x.SaleDate,
+                            Description = x.Description,
+                            ToSale = x.ToSale
+                        }));
+            
+                foreach (var item in model)
                 {
-                    item.ToSale = true;
+                    var userCar = await _context.UserCars.FirstOrDefaultAsync(x =>
+                        x.UserId == currentUserId && x.CarId == item.CarId);
+                    if (userCar != null)
+                    {
+                        item.ToSale = true;
+                    }
                 }
             }
             

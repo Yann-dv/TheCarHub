@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-around">
-                        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == carViewModel.OwnerId)
+                        @if ((User.IsInRole("Admin") && ViewBag.CurrentUserId == carViewModel.OwnerId) || User.IsInRole("SuperAdmin"))
                         {
                             <td>
                                <form method="post" enctype="multipart/form-data" asp-controller="Cars" asp-action="UploadImage" >
@@ -173,7 +173,7 @@
                 <p>Price : <span class="text-decoration-underline">@Html.Raw(carViewModel.SellingPrice.ToString("C2", CultureInfo.CurrentCulture))</span></p>
             }
             <div class="carCardFooter">
-                @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == carViewModel.OwnerId)
+                @if ((User.IsInRole("Admin") && ViewBag.CurrentUserId == carViewModel.OwnerId) || User.IsInRole("SuperAdmin"))
                 {
                     <p>Sold / to sale: 
                         <button id="@carViewModel.CarId" onclick="location.href='@Url.Action("SoldToggler", "Cars", new {id= carViewModel.CarId, toSaleValue= carViewModel.ToSale })'" class="btn @(carViewModel.ToSale ? "btn-danger" : "btn-success") text-light ms-3 fs-5 py-0 px-2 carListToggleBtn">
