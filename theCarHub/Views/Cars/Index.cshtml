@@ -12,7 +12,7 @@
 <h1 class="text-decoration-underline">All our cars</h1>
 
 <p>
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
     {
         <a class="fs-3 my-2" asp-action="Create">Add a new car</a>
     }
@@ -61,7 +61,7 @@
                                         {
                                             <div class="carousel-item active" data-bs-interval="5000">
                                                 <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100" style="height:500px">
-                                                @if (User.IsInRole("Admin"))
+                                                @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
                                                 {
                                                 <a href="@Url.Action("DeleteImage", "Cars", new { carImagesNewModel.content, carImagesNewModel.contentType, carImagesNewModel.name, carImagesNewModel.uri})" title="Delete current image" class="z-3 btn btn-danger link-light p-2 position-absolute top-0 end-0">
                                                     <img src="~/trash.svg" alt="Delete current image" style="width: 25px"/>
@@ -73,7 +73,7 @@
                                         {
                                             <div class="carousel-item" data-bs-interval="5000">
                                                 <img src="@Html.DisplayFor(model => carImagesNewModel.uri)" alt="Image of @carViewModel.Brand @carViewModel.Model" title="Image of @carViewModel.Brand @carViewModel.Model" class="d-block w-100" style="height:500px">
-                                                @if (User.IsInRole("Admin"))
+                                                @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
                                                 {
                                                     <a href="@Url.Action("DeleteImage", "Cars", new { carImagesNewModel.content, carImagesNewModel.contentType, carImagesNewModel.name, carImagesNewModel.uri })" title="Delete current image" class="z-3 btn btn-danger link-light p-2 position-absolute top-0 end-0">
                                                         <img src="~/trash.svg" alt="Delete current image" style="width: 25px"/>

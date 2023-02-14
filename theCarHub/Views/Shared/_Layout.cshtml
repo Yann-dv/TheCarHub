@@ -27,7 +27,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/Cars" ? "active" : "")" asp-area="" asp-controller="Cars" asp-action="Index">Cars</a>
                     </li>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
                     {
                         <li class="nav-item">
                             <a class="nav-link text-light @(Accessor.HttpContext?.Request.Path.Value == "/CarList" ? "active" : "")" asp-area="" asp-controller="CarList" asp-action="Index">Cars manager</a>

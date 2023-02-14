@@ -92,7 +92,7 @@
                     @Html.DisplayFor(modelItem => item.SaleDate)
                 }
             </td>
-            @if (User.IsInRole("Admin"))
+            @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
             {
                 <td class="align-middle border-end">
                     <button id="@item.CarId" onclick="location.href='@Url.Action("SoldToggler", "CarList", new { id = @item.CarId, toSaleValue = @item.ToSale })'" class="btn @(item.ToSale ? "btn-danger" : "btn-success") w-75 text-light fs-5 py-0 px-2 carListToggleBtn">

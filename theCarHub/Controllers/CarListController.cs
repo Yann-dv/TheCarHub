@@ -32,7 +32,7 @@ namespace theCarHub.Controllers
             return user?.Id;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Index(string sortOrder)
         {
             var currentUserId = await GetCurrentUserId();
@@ -151,7 +151,7 @@ namespace theCarHub.Controllers
             return View(modelToSort.ToList());
         }
         
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public IActionResult Create()
         {
             return RedirectToAction("Create", "Cars");
@@ -162,19 +162,19 @@ namespace theCarHub.Controllers
             return RedirectToAction("Details", "Cars", new { id = id });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             return RedirectToAction("Edit", "Cars", new { id = id });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             return RedirectToAction("Delete", "Cars", new { id = id });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> SoldToggler(int id, bool toSaleValue)
         {
             var car = _context.Cars?.FirstOrDefault(c => c.Id == id);
