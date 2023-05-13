@@ -80,7 +80,7 @@ namespace theCarHub.Controllers
             return View(Tuple.Create(model, ListOfImagesUrl));
         }
         
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> DeleteImage(CarImagesModel imgObject)
         {
             if (imgObject == null || _context.Cars == null)
@@ -102,7 +102,7 @@ namespace theCarHub.Controllers
         [HttpPost]
         [AcceptVerbs("DELETE")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> DeleteImageConfirmation(string fileName)
         {
             string baseUrl = "https://thecarhub-api.azurewebsites.net/";
@@ -189,7 +189,7 @@ namespace theCarHub.Controllers
         }
 
         // GET: Cars/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public IActionResult Create()
         {
             return View();
@@ -198,7 +198,7 @@ namespace theCarHub.Controllers
         // POST: Cars/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
@@ -224,7 +224,7 @@ namespace theCarHub.Controllers
         }
 
         // GET: Cars/Edit/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Cars == null)
@@ -241,7 +241,7 @@ namespace theCarHub.Controllers
             return View(car);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         // POST: Cars/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -283,7 +283,7 @@ namespace theCarHub.Controllers
             return View(car);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         // GET: Cars/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -294,15 +294,19 @@ namespace theCarHub.Controllers
 
             var car = await _context.Cars
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (car == null ||  car.OwnerId != _userManager.GetUserId(HttpContext.User))
+            if (car == null)
             {
                 return NotFound();
             }
 
-            return View(car);
+            if (car.OwnerId == _userManager.GetUserId(HttpContext.User) || User.IsInRole("SuperAdmin"))
+            {
+                return View(car);
+            }
+            return NotFound();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         // POST: Cars/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -328,7 +332,7 @@ namespace theCarHub.Controllers
             return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> SoldToggler(int id, bool toSaleValue)
         {
             var car = _context.Cars?.FirstOrDefault(c => c.Id == id);

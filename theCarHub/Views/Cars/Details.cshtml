@@ -11,7 +11,7 @@
     <h4>@Model.Make @Model.Model @Model.Trim @Model.Year.Year</h4>
     <hr />
     <dl class="row">
-        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
+        @if ((User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId) || User.IsInRole("SuperAdmin"))
         {
             <dt class="col-sm-2">
                 Car Id
@@ -50,7 +50,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Trim)
         </dd>
-        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
+        @if ((User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId) || User.IsInRole("SuperAdmin"))
         {
             <dt class="col-sm-2">
                 Purchased on
@@ -97,7 +97,7 @@
             <dd class="col-sm-10">SOLD OUT</dd>
         }
         
-        @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
+        @if ((User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId) || User.IsInRole("SuperAdmin"))
         {
             <dt class="col-sm-2">
                 Sale date
@@ -126,7 +126,7 @@
     }
 </div>
 <div>
-    @if (User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId)
+    @if ((User.IsInRole("Admin") && ViewBag.CurrentUserId == Model.OwnerId) || User.IsInRole("SuperAdmin"))
     {
     <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success text-light">Edit</a>
     }
