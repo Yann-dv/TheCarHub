@@ -13,16 +13,19 @@ string connectionString;
 // Add services to the container.
 if (azureConnectionString != null) {
     connectionString = azureConnectionString ?? throw new InvalidOperationException("Connection string 'AzureConnection' not found.");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(connectionString)); /*, sqlServerOptionsAction: sqlOptions =>
+        sqlOptions.EnableRetryOnFailure()));*/
 }
 else
 {
     connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+        opt.UseInMemoryDatabase("InMemoryDb_TheCarHub"));
 }
 
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString)); /*, sqlServerOptionsAction: sqlOptions =>
-        sqlOptions.EnableRetryOnFailure()));*/
+
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
